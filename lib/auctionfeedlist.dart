@@ -21,6 +21,79 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     );
   }
 
+  List<Widget> showNickAddress(BidList data){
+    List<Widget> widgets = [];
+    widgets.add(Container(
+        padding: EdgeInsets.only(left: 10.0,),
+          child:Text(data.bidGoods.goodsName, style: TextStyle(fontSize: 15.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,
+          ),
+      )
+    );
+    if(data.onofflineExt != null && data.onofflineExt.location != null){
+      widgets.add(
+          Container(
+              padding: EdgeInsets.only(left: 10.0,),
+              child:Row(children: <Widget>[
+                  Image(image: AssetImage("lib/image/icon_location_address.png"), width: 8.0, height: 18.0,),
+                  Text(data.onofflineExt.location, style: TextStyle(fontSize: 11.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,),
+                ],
+              )
+          )
+      );
+    }
+    return widgets;
+  }
+  List<Widget> showLiveAttention(BidList data){
+    List<Widget> widgets = [];
+    widgets.add(Container(
+        padding: EdgeInsets.only(right: 10.0,),
+        child:Image(image: AssetImage("lib/image/icon_video.png"), width: 30.0, height: 30.0,
+        )));
+    widgets.add(Container(
+        padding: EdgeInsets.only(right: 10.0,),
+        child:Text("${data.browseNum}人关注", style: TextStyle(fontSize: 11.0, color: Colors.white),textAlign: TextAlign.right,)));
+    return widgets;
+  }
+
+  Widget setAuctionFeedCover(BidList data){
+    return new Container(
+      constraints: BoxConstraints.expand(height: 235.0),//height: 235.0,如果不展示高度，Stack内部的布局容易错位
+      decoration: new BoxDecoration(image: new DecorationImage(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic)))),
+      child: Stack(
+        children: <Widget>[
+//                    Image(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic))),
+          Positioned(child:Material(
+            color: Color(0xffc4311d),
+            child: new Container(
+              padding: const EdgeInsets.only(left:10.0,top:5.0,right:10.0,bottom:5.0),
+              child: new Text('倒计时',style: new TextStyle(fontSize: 11.0),),
+            ),
+            shape: RoundedRectangleBorder(side: BorderSide(style: BorderStyle.none), borderRadius: BorderRadius.horizontal(right: Radius.circular(50))),
+          ),
+            top: 10.0,
+          ),
+          Align(
+            child: IntrinsicHeight(
+                child: Container(
+                  padding: EdgeInsets.only(top: 15.0),
+                  constraints: BoxConstraints.expand(height: 75.0),
+                  decoration: new BoxDecoration(
+                      gradient: new LinearGradient(
+                          begin: Alignment.bottomCenter, end: Alignment.topCenter, colors: [Color(0xff000000), Color(0x000000)])),
+                  child:new Row(children: <Widget>[
+                    Expanded(child:Column(children: showNickAddress(data), crossAxisAlignment: CrossAxisAlignment.start,),),
+                    Column(children: showLiveAttention(data), crossAxisAlignment: CrossAxisAlignment.end,),
+                  ]
+                  ),
+                )
+            ),
+            alignment: AlignmentDirectional.bottomStart,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget listItem(context, index, BidList data) {
     TextTheme textTheme = Theme.of(context).textTheme;
 
@@ -37,23 +110,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 getRecommendUser(supplier, textTheme),
-                new Container(
-                  height: 250.0,
-                  padding: const EdgeInsets.only(top: 200.0),
-                  decoration: new BoxDecoration(image: new DecorationImage(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic)))),
-                  child: new Row(children: <Widget>[
-                    new Icon(
-                      Icons.chat,
-                      color: Colors.lightBlueAccent,
-                    ),
-                    new Expanded(
-                      child: new Text(
-                        "消息记录",
-                        textAlign: TextAlign.right,
-                      ),
-                    )
-                  ]),
-                )
+                setAuctionFeedCover(data),
               ],
             ),
         )
@@ -63,15 +120,33 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
 
   Widget supplierTags(Supplier supplier, BuildContext context){
 //    debugPrint("${supplier.tags}  ${supplier.tags.length}");
-    List<Chip> tags = [];
+//    List<Chip> tags = [];
+//    for(int i=0;i<supplier.tags.length;i++){
+//      tags.add(Chip(
+//        label: Text(supplier.tags[i], style: TextStyle(fontSize: 11.0),),
+//        shape: RoundedRectangleBorder(side: BorderSide(color: Color(0xffc4311d)), borderRadius: BorderRadius.horizontal(left: Radius.circular(20), right: Radius.circular(20))),
+//        backgroundColor: Colors.white,
+//        labelPadding: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 0.0),
+////        padding: EdgeInsets.only(left: 0.0, top: 0.0, right: 0.0, bottom: 0.0),
+//        )
+//      );
+//    }
+    List<Material> tags = [];
     for(int i=0;i<supplier.tags.length;i++){
-      tags.add(Chip(
-        label: Text(supplier.tags[i], style: TextStyle(fontSize: 11.0),),
-        shape: RoundedRectangleBorder(side: BorderSide(color: Color(0xffc4311d)), borderRadius: BorderRadius.horizontal(left: Radius.circular(20), right: Radius.circular(20))),
-        backgroundColor: Colors.white,
-        labelPadding: EdgeInsets.only(left: 5.0, right: 5.0, bottom: 0.0),
-//        padding: EdgeInsets.only(left: 0.0, top: 0.0, right: 0.0, bottom: 0.0),
-        )
+      tags.add(Material(
+        //背景色
+//        color: Colors.amber,
+        shape: new StadiumBorder(
+          side: const BorderSide(
+              width: 1.0,
+              color: Color(0xffc4311d)
+          ),
+        ),
+        child: new Container(
+          padding: EdgeInsets.only(left:10.0,top:3.0,right:10.0,bottom:5.0),
+          child: new Text(supplier.tags[i],style: new TextStyle(fontSize: 11.0),),
+        ),
+      )
       );
     }
     return  Wrap(
