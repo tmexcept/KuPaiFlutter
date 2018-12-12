@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/bean/bean_auctionfeed.dart';
 import 'package:flutterapp/httprequest.dart';
+import 'package:flutterapp/realrichtext/real_rich_text.dart';
 
 class AuctionFeedListShow extends StatefulWidget {
   @override
@@ -94,11 +95,83 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     );
   }
 
+  Widget getPriceShow(BidList data){
+    return Container(height: 50.0,
+        alignment: AlignmentDirectional.center,
+        child:Stack(children: <Widget>[
+          Align(child:Row(children: <Widget>[
+            new Text("起拍价￥${data.initialPrice}",
+              style: new TextStyle(fontSize: 15.0,fontWeight: FontWeight.w400,color: Color(0xffb28147),),
+            ),
+            new Text("保证金￥${data.initialPrice}",
+              style: new TextStyle(fontSize: 15.0,fontWeight: FontWeight.w400,color: Colors.black,),
+            ),
+          ],
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          ),
+            alignment: AlignmentDirectional.center,
+          ),
+
+          Align(child: Container(color: Colors.black,width: 1.0, height: 50.0,alignment: AlignmentDirectional.center,),)
+        ],
+        )
+    );
+  }
+
+  Widget showVoice(BidList data){
+    return Container(
+      height: 50.0,
+      child:Stack(
+          children: <Widget>[
+            Container(
+              height: 35.0,
+              width: 50.0,
+              margin: EdgeInsets.only(left:10.0,top:10.0,right:10.0,bottom:10.0),
+              decoration: BoxDecoration(color: Color(0xffb28147), borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(0.0),
+                  topRight: Radius.circular(20.0),
+                  bottomLeft: Radius.circular(20.0),
+                  bottomRight: Radius.circular(20.0)
+              )),),
+            Align(child:Container(
+                padding: EdgeInsets.only(left: 25.0),
+                child:Row(
+                    children: <Widget>[
+                      Image(image: AssetImage("lib/image/icon_audio3.png"), width: 10.0, height: 15.0,),
+                      Container(padding: EdgeInsets.only(left: 5.0), child:Text("5'", style: TextStyle(color: Colors.white, fontSize: 11.0),),)
+                    ]
+                )
+            ),alignment: AlignmentDirectional.centerStart,
+            )
+          ]),
+    );
+  }
+
+  Widget getRecommendDesc(BidList data){
+    return Container(padding: EdgeInsets.all(10.0),
+        child:RealRichText([ImageSpan(
+            AssetImage("lib/image/dis_left_quote.png"),
+            imageWidth: 12.0,
+            imageHeight: 10.0
+        ),
+        TextSpan(
+          text: "data.bidGoods.recommendDesc",
+          style: TextStyle(fontSize: 14, color: Colors.black),
+        ),ImageSpan(
+            AssetImage("lib/image/dis_right_quote.png"),
+            imageWidth: 12.0,
+            imageHeight: 10.0
+        ),
+        ])
+    );
+  }
+
   Widget listItem(context, index, BidList data) {
     TextTheme textTheme = Theme.of(context).textTheme;
 
     Supplier supplier = data.bidGoods.supplier;
-    return Card(
+    return Container(
+      margin: EdgeInsets.all(10.0),
         color: Color(0xff4a4a4a),
         child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 1.0),
@@ -111,6 +184,10 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
               children: <Widget>[
                 getRecommendUser(supplier, textTheme),
                 setAuctionFeedCover(data),
+                showVoice(data),
+                getRecommendDesc(data),
+                Container(height: 1.0,color: Colors.black,),
+                getPriceShow(data),
               ],
             ),
         )
@@ -131,19 +208,28 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
 //        )
 //      );
 //    }
+
     List<Material> tags = [];
-    for(int i=0;i<supplier.tags.length;i++){
+    for(int i=0;i<supplier.tags.length && supplier.tags.length>0;i++){
+      if(supplier.tags[i].isEmpty) continue;
+
       tags.add(Material(
         //背景色
 //        color: Colors.amber,
-        shape: new StadiumBorder(
+        shape: new RoundedRectangleBorder(
           side: const BorderSide(
               width: 1.0,
               color: Color(0xffc4311d)
           ),
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(3.0),
+            topRight: const Radius.circular(3.0),
+            bottomLeft: const Radius.circular(3.0),
+            bottomRight: const Radius.circular(3.0),
+          )
         ),
         child: new Container(
-          padding: EdgeInsets.only(left:10.0,top:3.0,right:10.0,bottom:5.0),
+          padding: EdgeInsets.only(left:5.0,top:0.0,right:5.0,bottom:2.0),
           child: new Text(supplier.tags[i],style: new TextStyle(fontSize: 11.0),),
         ),
       )
@@ -156,31 +242,76 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     );
   }
 
+  Widget getPeopleAvater(Supplier supplier){
+    return
+      new Container(
+        margin: const EdgeInsets.only(top: 15.0, bottom: 15.0, right: 10.0, left: 10.0),
+        child: Stack(
+          alignment: AlignmentDirectional.bottomEnd,
+          children: <Widget>[new CircleAvatar(
+            backgroundImage: new NetworkImage(getUserAvater(supplier.supplierPic)),),
+            Positioned(child: Image(image:  AssetImage(getSupplierLevel(supplier.level)), width: 18.0, height: 10.0,),
+              right: 0.0,bottom: 0.0,
+            ),
+        ],
+      ),
+    );
+
+//    return
+//      new Container(
+//        height: 50.0,
+//        width: 50.0,
+//        margin: const EdgeInsets.only(top: 15.0, bottom: 15.0, right: 10.0, left: 10.0),
+//        decoration: BoxDecoration(image: DecorationImage(image: new NetworkImage(getUserAvater(supplier.supplierPic))), borderRadius: BorderRadius.all(Radius.circular(100.0)) ),
+//        child: Image(image:  AssetImage("lib/image/icon_video.png"), width: 5.0, height: 5.0,),
+//      );
+  }
+
   Widget getRecommendUser(Supplier supplier, TextTheme textTheme) {
     return
-      new IntrinsicHeight(child:new Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+    Container(
+        decoration: BoxDecoration(image: DecorationImage(image: AssetImage("lib/image/icon_supper_defoult_bg.webp"), fit: BoxFit.cover)),
+//      constraints: BoxConstraints.expand(height: 50.0),
+      child:new IntrinsicHeight(child:new Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Container(
-              margin: const EdgeInsets.only(top: 20.0, bottom: 20.0, right: 10.0, left: 10.0),
-              child: new CircleAvatar(
-                backgroundImage: new NetworkImage(getUserAvater(supplier.supplierPic)),
-    //            radius: 20.0,
-              ),
-            ),
-            new Container(
+            getPeopleAvater(supplier),
+            Flexible(child: new Container(
+              padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new Text(supplier.supplierName, style: textTheme.subhead, overflow: TextOverflow.ellipsis, softWrap: false,),
+                  new Container(
+                      padding: EdgeInsets.only(bottom: 5.0),
+                      child:Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Flexible(child: new Text("${supplier.supplierName}-测试能显示多少个汉字测试能显示多少个汉字",
+                            style: TextStyle(fontSize: 15.0, color: Colors.black), overflow: TextOverflow.ellipsis, softWrap: true,),
+                          ),
+                          Offstage(offstage: supplier.strict != 1,
+                            child: Image(image: AssetImage("lib/image/high_quality.png"),height: 16.0, width: 12.0,),),
+                          Offstage(offstage: supplier.supplierType != 4,
+                            child: Image(image: AssetImage("lib/image/icon_pai_blue.png"),height: 15.0, width: 15.0,),),
+                      ]),
+                  ),
                   supplierTags(supplier, context),
                 ],
               ),
-            )
+            ),
+            ),
+            new Container(
+              width: 50.0,
+              padding: EdgeInsets.only(left: 5.0),
+              child:Image(image: AssetImage("lib/image/icon_arrow.png"),height: 10.0, width: 6.0,),
+              alignment: AlignmentDirectional.centerStart,
+            ),
           ],
         )
-      );
+      )
+    );
   }
 
   Widget boxAdapterWidget(context) {

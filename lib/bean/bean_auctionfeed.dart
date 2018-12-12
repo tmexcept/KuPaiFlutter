@@ -143,7 +143,8 @@ class BidList {
 
   BidList.fromJson(jsonRes) {
     onofflineExt = jsonRes['onofflineExt'] == null ? null : new OnoffLineExt.fromJson(jsonRes['onofflineExt']);
-    bailPrice = jsonRes['bailPrice'];
+    num bail = jsonRes['bailPrice'];
+    bailPrice = bail.toDouble();
     bidStatus = jsonRes['bidStatus'];
     bidType = jsonRes['bidType'];
     browseNum = jsonRes['browseNum'];
@@ -151,7 +152,8 @@ class BidList {
     endTime = jsonRes['endTime'];
     focusNum = jsonRes['focusNum'];
     index = jsonRes['index'];
-    initialPrice = jsonRes['initialPrice'];
+    num init = jsonRes['initialPrice'];
+    initialPrice = init.toDouble();
     isOnoffline = jsonRes['isOnoffline'];
     isVideoUrl = jsonRes['isVideoUrl'];
     leftEndTime = jsonRes['leftEndTime'];
@@ -299,7 +301,7 @@ class Recommenduser {
   String recommendName;//推荐人名称
   String recommendAuthText; //认证信息
   int recommendAuthStatus;// 认证状态
-  String recommendUid ;//推荐人id
+  int recommendUid ;//推荐人id
   int recommendAudioTime ;//推荐语音时长
   String recommendAudioUrl; //推荐语音地址
 
@@ -358,4 +360,9 @@ String getPhotoUrl(String picid, int size) {
     return picid;
   }
   return IMAGE_BASE_URL + picid + "/" + size.toString();
+}
+
+String getSupplierLevel(int level){
+  // ignore: unnecessary_brace_in_string_interps
+  return "lib/image/supplier_level/ins_level_${level}.png";
 }

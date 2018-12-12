@@ -40,6 +40,25 @@ flutter:
     - lib/image/icon_splash.jpg
     - lib/image/icon_location_address.png
     - lib/image/icon_video.png
+    - lib/image/icon_audio3.png
+    - lib/image/dis_left_quote.png
+    - lib/image/dis_right_quote.png
+    - lib/image/icon_supper_defoult_bg.webp
+    - lib/image/supplier_level/ins_level_1.png
+    - lib/image/supplier_level/ins_level_2.png
+    - lib/image/supplier_level/ins_level_3.png
+    - lib/image/supplier_level/ins_level_4.png
+    - lib/image/supplier_level/ins_level_5.png
+    - lib/image/supplier_level/ins_level_6.png
+    - lib/image/supplier_level/ins_level_7.png
+    - lib/image/supplier_level/ins_level_8.png
+    - lib/image/supplier_level/ins_level_9.png
+    - lib/image/supplier_level/ins_level_10.png
+    - lib/image/supplier_level/ins_level_11.png
+    - lib/image/supplier_level/ins_level_12.png
+    - lib/image/high_quality.png
+    - lib/image/icon_pai_blue.png
+    - lib/image/icon_arrow.png
     - lib/file/file.txt
     - lib/file/fileerror.txt
 
