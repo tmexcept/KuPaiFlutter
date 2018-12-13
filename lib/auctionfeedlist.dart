@@ -6,6 +6,7 @@ import 'package:flutterapp/auctionlistitem.dart';
 import 'package:flutterapp/bean/bean_auctionfeed.dart';
 import 'package:flutterapp/httprequest.dart';
 import 'package:flutterapp/realrichtext/real_rich_text.dart';
+import 'dart:convert';
 
 class AuctionFeedListShow extends StatefulWidget {
   @override
@@ -33,9 +34,9 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     debugPrint("_timer.isActive = ${_timer.toString()}");
 
     _timer = new Timer.periodic(new Duration(seconds: 1), (timer) {
-      BidList bidInfo;
-      for(int i=0;i<bidList.length;i++){
-        bidInfo = bidList[i];
+      BidStatusCountDown bidInfo;
+      for(int i=0;i<bidStatus.length;i++){
+        bidInfo = bidStatus[i];
         if (bidInfo.bidStatus == 2) {
           if (bidInfo.leftStartTime >= 0) {
             bidInfo.leftStartTime -= 1;
@@ -96,14 +97,14 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     return widgets;
   }
 
-  Widget setAuctionFeedCover(BidList data){
+  Widget setAuctionFeedCover(BidList data, BidStatusCountDown status){
     return new Container(
       constraints: BoxConstraints.expand(height: 235.0),//height: 235.0,如果不展示高度，Stack内部的布局容易错位
       decoration: new BoxDecoration(image: new DecorationImage(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic)))),
       child: Stack(
         children: <Widget>[
 //                    Image(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic))),
-          Positioned(child: new AuctionListItemWidget(data: data),
+          Positioned(child: new AuctionListItemWidget(data: status),
             top: 10.0,
           ),
           Align(
@@ -219,7 +220,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 getRecommendUser(supplier, context),
-                setAuctionFeedCover(data),
+                setAuctionFeedCover(data, bidStatus[index]),
                 showVoice(data),
                 getRecommendDesc(data),
                 Container(height: 0.5,color: Colors.black,),
@@ -361,13 +362,25 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
   }
 
 
+  List<BidStatusCountDown> bidStatus;
   List<BidList> bidList;
   getDetailEntity(){
     new Future(() => fetchDetailEntity())
         .then((bidList){
+          bidStatus = [];
+
+          for(int i=0;i<bidList.length;i++){
+            BidStatusCountDown countDown = BidStatusCountDown.fromParams(bidStatus: bidList[i].bidStatus, endTime: bidList[i].endTime, leftEndTime: bidList[i].leftEndTime,
+                startTime: bidList[i].startTime, leftStartTime: bidList[i].leftEndTime, saleId: bidList[i].saleId);
+            debugPrint(countDown.toString());
+
+            bidStatus.add(countDown);
+          }
+
           setState(() {
             debugPrint("setState");
             this.bidList = bidList;
+            this.bidStatus = bidStatus;
           });
         });
   }

@@ -108,6 +108,31 @@ class ThemeInfo {
   }
 }
 
+class BidStatusCountDown{
+  int bidStatus;
+  int saleId;
+  int leftEndTime;
+  int leftStartTime;
+  int endTime;
+  int startTime;
+
+  BidStatusCountDown.fromParams({this.bidStatus, this.endTime, this.leftEndTime, this.leftStartTime,
+    this.saleId, this.startTime});
+
+  BidStatusCountDown.fromJson(jsonRes) {
+    bidStatus = jsonRes['bidStatus'];
+    endTime = jsonRes['endTime'];
+    leftEndTime = jsonRes['leftEndTime'];
+    leftStartTime = jsonRes['leftStartTime'];
+    saleId = jsonRes['saleId'];
+    startTime = jsonRes['startTime'];
+  }
+
+  @override
+  String toString() {
+    return '{"bidStatus": $bidStatus,"endTime": $endTime,"leftEndTime": $leftEndTime,"leftStartTime": $leftStartTime,"saleId": $saleId,"startTime": $startTime}';
+  }
+}
 
 class BidList {
 
