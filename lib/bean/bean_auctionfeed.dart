@@ -367,7 +367,7 @@ String getCountDownStatus2(int leftStartTime, int startTime) {
     if (startTime == 0) {
       return "预展中";
     } else {
-      return "预展中 ${getStartTimeString2(startTime)}";
+      return "预展中 专场 ${getStartTimeString2(startTime)} 开始";
     }
   }
 }
@@ -375,11 +375,11 @@ String getCountDownStatus3(int leftEndTime, int endTime) {
 //  return "热拍中 ${transferSeconds2Period(leftEndTime)} 结束";
   if (endTime > 0) {
     if(leftEndTime>0 && leftEndTime<7200) {
-      return "热拍中 距结束：${transferSeconds2Period(endTime)}";
+      return "热拍中 距结束：${transferSeconds2Period(leftEndTime)}";
     }else if(leftEndTime>7200){
       return "热拍中 ${getStartTimeStringEnd(endTime)} 结束";
     } else {
-      return "已结束 ${getMonthDayMinuteSecond(endTime)}已结拍";
+      return "已结束 ${getMonthDayMinuteSecond(endTime*1000)}已结拍";
     }
   } else {
     return "热拍中";

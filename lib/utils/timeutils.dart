@@ -1,10 +1,13 @@
 
+import 'package:flutter/material.dart';
+
 String transferSeconds2Period(int totalSeconds) {
   int days, hours, minutes, seconds;
 
-  days = (totalSeconds / 86400).round();
-  hours = (totalSeconds % 86400 / 3600).round();
-  minutes = (totalSeconds % 86400 % 3600 / 60).round();
+  debugPrint("totalSeconds = $totalSeconds");
+  days = (totalSeconds / 86400).floor();
+  hours = (totalSeconds % 86400 / 3600).floor();
+  minutes = (totalSeconds % 86400 % 3600 / 60).floor();
   seconds = totalSeconds % 86400 % 3600 % 60;
   String result = "";
 
@@ -21,32 +24,39 @@ String transferSeconds2Period(int totalSeconds) {
 
 String getStartTimeString2(int startTime){
   DateTime nowTime = new DateTime.now();//当前时间
-  var time = new DateTime.fromMillisecondsSinceEpoch(startTime);
+  var time = new DateTime.fromMillisecondsSinceEpoch(startTime*1000);
+  StringBuffer str = new StringBuffer();
   if (time.year == nowTime.year && time.month == nowTime.month) {
     if (time.day == nowTime.day) {
-      return "专场 今天 开始";
+      str.write("今天");
     } else if (time.day == nowTime.day+1) {
-      return "专场 明天 开始";
+      str.write("明天");
     }
   }
-  return ("专场 ${time.month}月${time.day}日 开始");
+  str.write("${time.month}月${time.day}日");
+  return str.toString();
 }
 
 String getStartTimeStringEnd(int endTime){
   DateTime nowTime = new DateTime.now();//当前时间
-  var time = new DateTime.fromMillisecondsSinceEpoch(endTime);
+  var time = new DateTime.fromMillisecondsSinceEpoch(endTime*1000);
+  debugPrint("endTime = $time");
 
   if (time.year == nowTime.year && time.month == nowTime.month) {
     if (time.day == nowTime.day) {
-      return "今天 ${time.minute}:${time.second}";
+      return "今天 ${time.hour}:${getMinutes(time.minute)}";
     } else if (time.day == nowTime.day+1) {
-      return "明天 ${time.minute}:${time.second}";
+      return "明天 ${time.hour}:${getMinutes(time.minute)}";
     }
   }
-  return "${time.month}月${time.day}日 ${time.minute}:${time.second}";
+  return "${time.month}月${time.day}日 ${time.hour}:${getMinutes(time.minute)}";
 }
 
 String getMonthDayMinuteSecond(int times){
   var time = new DateTime.fromMillisecondsSinceEpoch(times);
-  return "${time.month}月${time.day}日 ${time.minute}:${time.second}";
+  return "${time.month}月${time.day}日 ${time.hour}:${getMinutes(time.minute)}";
+}
+
+String getMinutes(int minute){
+  return minute == 0 ? "00": minute.toString();
 }
