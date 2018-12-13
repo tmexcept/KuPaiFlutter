@@ -8,7 +8,7 @@ import 'package:flutterapp/utils/timeutils.dart';
 
 class AuctionListItemWidget extends StatefulWidget{
 
-  final BidStatusCountDown data;
+  final BidList data;
   AuctionListItemWidget({Key key, this.data});
 
   @override
@@ -19,7 +19,7 @@ class AuctionListItemWidget extends StatefulWidget{
 }
 
 class AuctionListItemState extends State<AuctionListItemWidget>{
-  final BidStatusCountDown data;
+  final BidList data;
   AuctionListItemState(this.data);
   int color;
   String countDown;

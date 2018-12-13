@@ -372,18 +372,18 @@ String getCountDownStatus2(int leftStartTime, int startTime) {
   }
 }
 String getCountDownStatus3(int leftEndTime, int endTime) {
-  return "热拍中 ${transferSeconds2Period(leftEndTime)} 结束";
-//  if (endTime > 0) {
-//    if(leftEndTime>0 && leftEndTime<7200) {
-//      return "热拍中 距结束：${transferSeconds2Period(endTime)}";
-//    }else if(leftEndTime>7200){
-//      return "热拍中 ${getStartTimeStringEnd(endTime)} 结束";
-//    } else {
-//      return "已结束 ${getMonthDayMinuteSecond(endTime)}已结拍";
-//    }
-//  } else {
-//    return "热拍中";
-//  }
+//  return "热拍中 ${transferSeconds2Period(leftEndTime)} 结束";
+  if (endTime > 0) {
+    if(leftEndTime>0 && leftEndTime<7200) {
+      return "热拍中 距结束：${transferSeconds2Period(endTime)}";
+    }else if(leftEndTime>7200){
+      return "热拍中 ${getStartTimeStringEnd(endTime)} 结束";
+    } else {
+      return "已结束 ${getMonthDayMinuteSecond(endTime)}已结拍";
+    }
+  } else {
+    return "热拍中";
+  }
 }
 
 String getUserAvater(String picUrl){
