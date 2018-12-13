@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/auctionlistitem.dart';
 import 'package:flutterapp/bean/bean_auctionfeed.dart';
 import 'package:flutterapp/httprequest.dart';
 import 'package:flutterapp/realrichtext/real_rich_text.dart';
@@ -10,6 +13,7 @@ class AuctionFeedListShow extends StatefulWidget {
 }
 
 class AuctionFeedListState extends State<AuctionFeedListShow> {
+
   @override
   Widget build(BuildContext context) {
     print("========================");
@@ -20,6 +24,42 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
       //...
       body: boxAdapterWidget(context),
     );
+  }
+
+  Timer _timer;
+  _startTimer() {
+    //https://www.jianshu.com/p/f7a9b8c84d26
+    if(_timer != null && _timer.isActive) return;
+    debugPrint("_timer.isActive = ${_timer.toString()}");
+
+    _timer = new Timer.periodic(new Duration(seconds: 1), (timer) {
+      BidList bidInfo;
+      for(int i=0;i<bidList.length;i++){
+        bidInfo = bidList[i];
+        if (bidInfo.bidStatus == 2) {
+          if (bidInfo.leftStartTime >= 0) {
+            bidInfo.leftStartTime -= 1;
+            bidInfo.leftEndTime -= 1;
+          } else {
+            bidInfo.leftEndTime -= 1;
+          }
+        } else if (bidInfo.bidStatus == 3) {
+          if (bidInfo.leftEndTime >= 0) {
+            bidInfo.leftEndTime -= 1;
+          }
+        }
+      }
+    });
+  }
+
+  _cancelTimer() {
+    _timer?.cancel();
+  }
+
+  @override
+  void dispose(){
+    super.dispose();
+    _cancelTimer();
   }
 
   List<Widget> showNickAddress(BidList data){
@@ -63,27 +103,22 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
       child: Stack(
         children: <Widget>[
 //                    Image(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic))),
-          Positioned(child:Material(
-            color: Color(0xffc4311d),
-            child: new Container(
-              padding: const EdgeInsets.only(left:10.0,top:5.0,right:10.0,bottom:5.0),
-              child: new Text('倒计时',style: new TextStyle(fontSize: 11.0),),
-            ),
-            shape: RoundedRectangleBorder(side: BorderSide(style: BorderStyle.none), borderRadius: BorderRadius.horizontal(right: Radius.circular(50))),
-          ),
+          Positioned(child: new AuctionListItemWidget(data: data),
             top: 10.0,
           ),
           Align(
             child: IntrinsicHeight(
                 child: Container(
                   padding: EdgeInsets.only(top: 15.0),
-                  constraints: BoxConstraints.expand(height: 75.0),
+                  constraints: BoxConstraints.expand(height: 65.0),
                   decoration: new BoxDecoration(
                       gradient: new LinearGradient(
                           begin: Alignment.bottomCenter, end: Alignment.topCenter, colors: [Color(0xff000000), Color(0x000000)])),
-                  child:new Row(children: <Widget>[
-                    Expanded(child:Column(children: showNickAddress(data), crossAxisAlignment: CrossAxisAlignment.start,),),
-                    Column(children: showLiveAttention(data), crossAxisAlignment: CrossAxisAlignment.end,),
+                  child:new Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic,
+                    children: <Widget>[
+                      Flexible(child:Column(children: showNickAddress(data),),),
+                      Column(children: showLiveAttention(data), crossAxisAlignment: CrossAxisAlignment.end,),
                   ]
                   ),
                 )
@@ -167,7 +202,8 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
   }
 
   Widget listItem(context, index, BidList data) {
-    TextTheme textTheme = Theme.of(context).textTheme;
+    debugPrint("listItem");
+    _startTimer();
 
     Supplier supplier = data.bidGoods.supplier;
     return Container(
@@ -182,11 +218,11 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                getRecommendUser(supplier, textTheme),
+                getRecommendUser(supplier, context),
                 setAuctionFeedCover(data),
                 showVoice(data),
                 getRecommendDesc(data),
-                Container(height: 1.0,color: Colors.black,),
+                Container(height: 0.5,color: Colors.black,),
                 getPriceShow(data),
               ],
             ),
@@ -267,9 +303,19 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
 //      );
   }
 
-  Widget getRecommendUser(Supplier supplier, TextTheme textTheme) {
-    return
-    Container(
+  Widget getRecommendUser(Supplier supplier, BuildContext context) {
+    return GestureDetector(
+      child: showRecommendUser(supplier),
+      onTap: (){
+        Scaffold.of(context).showSnackBar(new SnackBar(
+          content: new Text("点击了${supplier.supplierName}"),
+        ));
+      },
+    );
+  }
+
+  Widget showRecommendUser(Supplier supplier) {
+    return Container(
         decoration: BoxDecoration(image: DecorationImage(image: AssetImage("lib/image/icon_supper_defoult_bg.webp"), fit: BoxFit.cover)),
 //      constraints: BoxConstraints.expand(height: 50.0),
       child:new IntrinsicHeight(child:new Row(
@@ -288,7 +334,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Flexible(child: new Text("${supplier.supplierName}-测试能显示多少个汉字测试能显示多少个汉字",
+                          Flexible(child: new Text(supplier.supplierName,
                             style: TextStyle(fontSize: 15.0, color: Colors.black), overflow: TextOverflow.ellipsis, softWrap: true,),
                           ),
                           Offstage(offstage: supplier.strict != 1,
@@ -314,20 +360,42 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     );
   }
 
+
+  List<BidList> bidList;
+  getDetailEntity(){
+    new Future(() => fetchDetailEntity())
+        .then((bidList){
+          setState(() {
+            debugPrint("setState");
+            this.bidList = bidList;
+          });
+        });
+  }
+
   Widget boxAdapterWidget(context) {
-    return FutureBuilder<List<BidList>>(
-      future: fetchDetailEntity(context),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index) =>
-                  listItem(context, index, snapshot.data[index]));
-        } else if (snapshot.hasError) {
-          return Center(child: Text('${snapshot.error}'));
-        }
-        return Center(child: CircularProgressIndicator());
-      },
-    );
+    if(bidList == null || bidList.isEmpty){
+      getDetailEntity();
+      return Center(child: CircularProgressIndicator());
+    } else {
+      return ListView.builder(
+          itemCount: bidList.length,
+          itemBuilder: (context, index) =>
+              listItem(context, index, bidList[index]));
+    }
+
+//    return FutureBuilder<List<BidList>>(
+//      future: fetchDetailEntity(),
+//      builder: (context, snapshot) {
+//        if (snapshot.hasData) {
+//          return ListView.builder(
+//              itemCount: snapshot.data.length,
+//              itemBuilder: (context, index) =>
+//                  listItem(context, index, snapshot.data[index]));
+//        } else if (snapshot.hasError) {
+//          return Center(child: Text('${snapshot.error}'));
+//        }
+//        return Center(child: CircularProgressIndicator());
+//      },
+//    );
   }
 }

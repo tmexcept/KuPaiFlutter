@@ -1,5 +1,6 @@
 import 'dart:convert' show json;
 import 'package:flutter/material.dart';
+import 'package:flutterapp/utils/timeutils.dart';
 
 class AuctionFeedBean {
 
@@ -283,7 +284,6 @@ class Supplier {
     supplierId = jsonRes['supplierId'];
     supplierName = jsonRes['supplierName'];
     supplierPic = jsonRes['supplierPic'];
-    debugPrint("${jsonRes['tags']}");
     tags = jsonRes['tags'].toString().split(",");
   }
 
@@ -326,6 +326,39 @@ class Recommenduser {
     // TODO: implement toString
     return super.toString();
   }
+}
+
+String getCountDownStatus2(int leftStartTime, int startTime) {
+  if (leftStartTime < 7200) {
+    if (startTime > 0) {
+      if (leftStartTime > 0) {
+        return "预展中 距开始：${transferSeconds2Period(leftStartTime)}";
+      } else {
+        return "热拍中";
+      }
+    } else
+      return "预展中";
+  } else {
+    if (startTime == 0) {
+      return "预展中";
+    } else {
+      return "预展中 ${getStartTimeString2(startTime)}";
+    }
+  }
+}
+String getCountDownStatus3(int leftEndTime, int endTime) {
+  return "热拍中 ${transferSeconds2Period(leftEndTime)} 结束";
+//  if (endTime > 0) {
+//    if(leftEndTime>0 && leftEndTime<7200) {
+//      return "热拍中 距结束：${transferSeconds2Period(endTime)}";
+//    }else if(leftEndTime>7200){
+//      return "热拍中 ${getStartTimeStringEnd(endTime)} 结束";
+//    } else {
+//      return "已结束 ${getMonthDayMinuteSecond(endTime)}已结拍";
+//    }
+//  } else {
+//    return "热拍中";
+//  }
 }
 
 String getUserAvater(String picUrl){

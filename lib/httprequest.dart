@@ -30,7 +30,7 @@ Future<String> fetchDetail() async {
   return response.body;
 }
 
-Future<List<BidList>> fetchDetailEntity(BuildContext context) async {
+Future<List<BidList>> fetchDetailEntity() async {
   String timestamp = DateTime.now().millisecondsSinceEpoch.toString(); // unix时间戳 System.currentTime()/1000 获取
 //  Map params = new Map();
 
@@ -50,7 +50,6 @@ Future<List<BidList>> fetchDetailEntity(BuildContext context) async {
         "APP_VERSION_CODE": "67",
         "APP_PLATFORM": "ANDROID",
         "CHANNEL_ID": "2010051014"});
-  debugPrint("**************");
   AuctionFeedBean feedBean = AuctionFeedBean.fromJson(json.decode(response.body));
 
 //  String data = await DefaultAssetBundle.of(context).loadString("lib/file/file.txt");
@@ -69,4 +68,47 @@ Future<List<BidList>> fetchDetailEntity(BuildContext context) async {
 
 //  return response.body;
   return bidEntitys;
+}
+
+fetchDetailEntitys(State context, List<BidList> bidList) async {
+  String timestamp = DateTime.now().millisecondsSinceEpoch.toString(); // unix时间戳 System.currentTime()/1000 获取
+//  Map params = new Map();
+
+//  const platform = const MethodChannel('flutter.io/sign');
+//  Future<String> sign = platform.invokeMethod("sign", "timestamp");
+
+//  "sign", NetCommUtil.signParams(params, timestamp)
+  final response = await http.get("https://api.51kupai.com/kupai/feed/v3_list",
+      headers: { "Accept-Encoding": "gzip","timestamp": timestamp,
+        "_bkAccessToken_": "",
+        "_tokenVersion_": "2",
+        "sign": "",
+        "_appType_": "2",
+        "guestId": "",
+        "kp-app-id": "10001",
+        "APP_VERSION": "3.1.0",
+        "APP_VERSION_CODE": "67",
+        "APP_PLATFORM": "ANDROID",
+        "CHANNEL_ID": "2010051014"});
+  AuctionFeedBean feedBean = AuctionFeedBean.fromJson(json.decode(response.body));
+
+//  String data = await DefaultAssetBundle.of(context).loadString("lib/file/file.txt");
+//  AuctionFeedBean feedBean = AuctionFeedBean.fromJson(json.decode(data));
+
+  List<BidList> bidEntitys;
+
+  if(feedBean.data != null  && feedBean.status){
+    bidEntitys = [];
+    List<FeedEntity> feedList = feedBean.data.feedList;
+    int length = feedList.length;
+    for(int i=0;i<length;i++){
+      bidEntitys.addAll(feedList[i].themeInfo.bidsList);
+    }
+  }
+
+  context.setState(() {
+    bidList = bidEntitys;
+  });
+
+//  return response.body;
 }
