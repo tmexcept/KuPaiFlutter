@@ -65,35 +65,23 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
 
   List<Widget> showNickAddress(BidList data){
     List<Widget> widgets = [];
-    widgets.add(Container(
-        padding: EdgeInsets.only(left: 10.0,),
-          child:Text(data.bidGoods.goodsName, style: TextStyle(fontSize: 15.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,
-          ),
-      )
-    );
+    widgets.add(Text(data.bidGoods.goodsName, style: TextStyle(fontSize: 15.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,));
+
     if(data.onofflineExt != null && data.onofflineExt.location != null){
-      widgets.add(
-          Container(
-              padding: EdgeInsets.only(left: 10.0,),
-              child:Row(children: <Widget>[
-                  Image(image: AssetImage("lib/image/icon_location_address.png"), width: 8.0, height: 18.0,),
-                  Text(data.onofflineExt.location, style: TextStyle(fontSize: 11.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,),
-                ],
-              )
-          )
+      widgets.add(Row(children: <Widget>[
+            Image(image: AssetImage("lib/image/icon_location_address.png"), width: 8.0, height: 18.0,),
+            Text(data.onofflineExt.location, style: TextStyle(fontSize: 11.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,),
+          ],
+        )
       );
     }
     return widgets;
   }
   List<Widget> showLiveAttention(BidList data){
     List<Widget> widgets = [];
-    widgets.add(Container(
-        padding: EdgeInsets.only(right: 10.0,),
-        child:Image(image: AssetImage("lib/image/icon_video.png"), width: 30.0, height: 30.0,
-        )));
-    widgets.add(Container(
-        padding: EdgeInsets.only(right: 10.0,),
-        child:Text("${data.browseNum}人关注", style: TextStyle(fontSize: 11.0, color: Colors.white),textAlign: TextAlign.right,)));
+    if(data.isVideoUrl == 1)
+      widgets.add(Image(image: AssetImage("lib/image/icon_video.png"), width: 30.0, height: 30.0,));
+    widgets.add(Text("${data.browseNum}人关注", style: TextStyle(fontSize: 11.0, color: Colors.white),textAlign: TextAlign.right,));
     return widgets;
   }
 
@@ -108,21 +96,18 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
             top: 10.0,
           ),
           Align(
-            child: IntrinsicHeight(
-                child: Container(
-                  padding: EdgeInsets.only(top: 15.0),
-                  constraints: BoxConstraints.expand(height: 65.0),
-                  decoration: new BoxDecoration(
-                      gradient: new LinearGradient(
-                          begin: Alignment.bottomCenter, end: Alignment.topCenter, colors: [Color(0xff000000), Color(0x000000)])),
-                  child:new Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic,
-                    children: <Widget>[
-                      Flexible(child:Column(children: showNickAddress(data),),),
-                      Column(children: showLiveAttention(data), crossAxisAlignment: CrossAxisAlignment.end,),
+            child: Container(
+              padding: EdgeInsets.only(top: 15.0, left: 10, right: 10,bottom: 2.0),
+              constraints: BoxConstraints.expand(height: 65.0),
+              decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                      begin: Alignment.bottomCenter, end: Alignment.topCenter, colors: [Color(0xff000000), Color(0x000000)])),
+              child:new Row(
+                  children: <Widget>[
+                    Expanded(child:Column(children: showNickAddress(data),crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.end,),),
+                    Column(children: showLiveAttention(data), crossAxisAlignment: CrossAxisAlignment.end, mainAxisAlignment: MainAxisAlignment.end,),
                   ]
-                  ),
-                )
+              ),
             ),
             alignment: AlignmentDirectional.bottomStart,
           ),
@@ -266,8 +251,8 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
           )
         ),
         child: new Container(
-          padding: EdgeInsets.only(left:5.0,top:0.0,right:5.0,bottom:2.0),
-          child: new Text(supplier.tags[i],style: new TextStyle(fontSize: 11.0),),
+          padding: EdgeInsets.only(left:5.0,top:1.0,right:5.0,bottom:1.0),
+          child: new Text(supplier.tags[i],style: new TextStyle(fontSize: 9.0, color: Color(0xffc4301d)),),
         ),
       )
       );

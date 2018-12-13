@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 String transferSeconds2Period(int totalSeconds) {
   int days, hours, minutes, seconds;
 
-  debugPrint("totalSeconds = $totalSeconds");
   days = (totalSeconds / 86400).floor();
   hours = (totalSeconds % 86400 / 3600).floor();
   minutes = (totalSeconds % 86400 % 3600 / 60).floor();
