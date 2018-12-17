@@ -15,6 +15,18 @@ class AuctionFeedListShow extends StatefulWidget {
 
 class AuctionFeedListState extends State<AuctionFeedListShow> {
 
+  static const int colorAssitRed = 0xffc4311d;
+  static const int colorMain = 0xffb28147;
+  static const int colorDayDevider = 0xffe8eff3;
+  static const int colorDayBg = 0xffffffff;
+  static const int colorDayTextMain = 0xff000000;
+  static const int colorDayTextAssit = 0xff666666;
+
+  static const int colorNightDivider = 0xff4a4a4a;
+  static const int colorNightBg = 0xff2b0601;
+  static const int colorNightTextMain = 0xffffffff;
+  static const int colorNightTextAssit = 0xff999999;
+
   @override
   Widget build(BuildContext context) {
     print("========================");
@@ -88,10 +100,10 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
   Widget setAuctionFeedCover(BidList data){
     return new Container(
       constraints: BoxConstraints.expand(height: 235.0),//height: 235.0,如果不展示高度，Stack内部的布局容易错位
-      decoration: new BoxDecoration(image: new DecorationImage(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic)))),
+//      decoration: new BoxDecoration(image: new DecorationImage(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic)))),
       child: Stack(
         children: <Widget>[
-//                    Image(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic))),
+          Container(constraints:BoxConstraints.expand(),child: Image(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic)), fit: BoxFit.fill,)),
           Positioned(child: new AuctionListItemWidget(data: data),
             top: 10.0,
           ),
@@ -117,23 +129,47 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
   }
 
   Widget getPriceShow(BidList data){
+    String leftPrice;
+    String rightPrice;
+    int leftColor;
+
+    if(data.bidStatus == 2){
+      leftPrice = "起拍价￥${data.initialPrice}";
+      leftColor = colorMain;
+      rightPrice = "保证金￥${data.bailPrice}";
+    } else if(data.bidStatus == 3){
+      leftPrice = "起拍价￥${data.initialPrice}";
+      rightPrice = "当前价￥${data.maxPrice}";
+      leftColor = colorAssitRed;
+    } else if (data.bidStatus == 8 || data.bidStatus == 9 || data.bidStatus == 10) {
+      leftPrice = "保证金￥${data.bailPrice}";
+      rightPrice = "起拍价￥${data.initialPrice}";
+      leftColor = colorMain;
+    } else {
+      leftPrice = "成交价￥${data.dealPrice}";
+      leftColor = colorAssitRed;
+      rightPrice = "最高出价￥${data.maxPrice}";
+
+    }
+
     return Container(height: 50.0,
         alignment: AlignmentDirectional.center,
         child:Stack(children: <Widget>[
           Align(child:Row(children: <Widget>[
-            new Text("起拍价￥${data.initialPrice}",
-              style: new TextStyle(fontSize: 15.0,fontWeight: FontWeight.w400,color: Color(0xffb28147),),
+            new Text(leftPrice,
+              style: new TextStyle(fontSize: 15.0,fontWeight: FontWeight.w400,color: Color(leftColor),),
             ),
-            new Text("保证金￥${data.initialPrice}",
-              style: new TextStyle(fontSize: 15.0,fontWeight: FontWeight.w400,color: Colors.black,),
+            new Text(rightPrice,
+              style: new TextStyle(fontSize: 15.0,fontWeight: FontWeight.w400,color: Color(data.localBackgroundType == 1 ? colorDayTextMain : colorNightTextMain),),
             ),
           ],
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
           ),
             alignment: AlignmentDirectional.center,
           ),
 
-          Align(child: Container(color: Colors.black,width: 1.0, height: 50.0,alignment: AlignmentDirectional.center,),)
+          Align(child: Container(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),
+            width: 1.0, height: 20.0,alignment: AlignmentDirectional.center,),)
         ],
         )
     );
@@ -168,54 +204,72 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     );
   }
 
-  Widget getRecommendDesc(BidList data){
+  Widget getRecommendDesc(String recommendDesc){
     return Container(padding: EdgeInsets.all(10.0),
-        child:RealRichText([ImageSpan(
-            AssetImage("lib/image/dis_left_quote.png"),
-            imageWidth: 12.0,
-            imageHeight: 10.0
-        ),
-        TextSpan(
-          text: "data.bidGoods.recommendDesc",
-          style: TextStyle(fontSize: 14, color: Colors.black),
-        ),ImageSpan(
-            AssetImage("lib/image/dis_right_quote.png"),
-            imageWidth: 12.0,
-            imageHeight: 10.0
-        ),
-        ])
-    );
-  }
-
-  Widget listItem(context, index, BidList data) {
-    debugPrint("listItem");
-    _startTimer();
-
-    Supplier supplier = data.bidGoods.supplier;
-    return Container(
-      margin: EdgeInsets.all(10.0),
-        color: Color(0xff4a4a4a),
-        child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 1.0),
-            decoration: new BoxDecoration(
-              color: Colors.white,
+        child:RealRichText([
+            ImageSpan(
+              AssetImage("lib/image/dis_left_quote.png"),
+              imageWidth: 12.0,
+              imageHeight: 10.0
             ),
-            child:  new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                getRecommendUser(supplier, context),
-                setAuctionFeedCover(data),
-                showVoice(data),
-                getRecommendDesc(data),
-                Container(height: 0.5,color: Colors.black,),
-                getPriceShow(data),
-              ],
+            TextSpan(
+              text: recommendDesc,
+              style: TextStyle(fontSize: 14, color: Colors.black,),
+            ),ImageSpan(
+                AssetImage("lib/image/dis_right_quote.png"),
+                imageWidth: 12.0,
+                imageHeight: 10.0
             ),
+          ],
+          maxLines: 2,
+          overflow:TextOverflow.ellipsis,
         )
     );
   }
 
+  List<Widget> getListViewItems(BidList data, BuildContext context){
+    List<Widget> items = [];
+    if(data.bidGoods.supplier != null){
+      items.add(getRecommendUser(data.bidGoods.supplier, context));
+    }
+    items.add(setAuctionFeedCover(data));
+    if(data.bidGoods.recommenduser != null){
+      if(data.bidGoods.recommenduser.recommendAudioTime != null){
+        items.add(showVoice(data));
+      }
+      if(data.bidGoods.recommenduser.recommendDesc != null){
+        items.add(getRecommendDesc(data.bidGoods.recommenduser.recommendDesc));
+      }
+    }
+    items.add(Container(height: 0.5,color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),),);
+    items.add(getPriceShow(data));
+    return items;
+  }
+
+  Widget listItem(context, index, BidList data) {
+    _startTimer();
+
+    return Container(
+      padding: EdgeInsets.all(10.0),
+        color: Color(data.localBackgroundType == 1 ? colorDayBg : colorNightBg),
+        child:  Container(
+          decoration: BoxDecoration(
+              border: Border(
+                  left: BorderSide(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),width: 1),
+                  top: BorderSide(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),width: 1),
+                  right: BorderSide(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),width: 1),
+                  bottom: BorderSide(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),width: 1),
+              )
+          ),
+          child:  new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: getListViewItems(data, context),
+          ),
+        )
+
+    );
+  }
 
   Widget supplierTags(Supplier supplier, BuildContext context){
 //    debugPrint("${supplier.tags}  ${supplier.tags.length}");
@@ -241,7 +295,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
         shape: new RoundedRectangleBorder(
           side: const BorderSide(
               width: 1.0,
-              color: Color(0xffc4311d)
+              color: Color(colorAssitRed)
           ),
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(3.0),
@@ -252,7 +306,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
         ),
         child: new Container(
           padding: EdgeInsets.only(left:5.0,top:1.0,right:5.0,bottom:1.0),
-          child: new Text(supplier.tags[i],style: new TextStyle(fontSize: 9.0, color: Color(0xffc4301d)),),
+          child: new Text(supplier.tags[i],style: new TextStyle(fontSize: 9.0, color: Color(colorAssitRed)),),
         ),
       )
       );

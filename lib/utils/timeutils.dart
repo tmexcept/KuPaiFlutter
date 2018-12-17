@@ -30,25 +30,33 @@ String getStartTimeString2(int startTime){
       str.write("今天");
     } else if (time.day == nowTime.day+1) {
       str.write("明天");
+    } else{
+      str.write("${time.month}月${time.day}日");
     }
+  } else {
+    str.write("${time.month}月${time.day}日");
   }
-  str.write("${time.month}月${time.day}日");
   return str.toString();
 }
 
 String getStartTimeStringEnd(int endTime){
   DateTime nowTime = new DateTime.now();//当前时间
   var time = new DateTime.fromMillisecondsSinceEpoch(endTime*1000);
-  debugPrint("endTime = $time");
 
+  StringBuffer str = new StringBuffer();
   if (time.year == nowTime.year && time.month == nowTime.month) {
     if (time.day == nowTime.day) {
-      return "今天 ${time.hour}:${getMinutes(time.minute)}";
+      str.write("今天 ");
     } else if (time.day == nowTime.day+1) {
-      return "明天 ${time.hour}:${getMinutes(time.minute)}";
+      str.write("明天 ");
+    } else {
+      str.write("${time.month}月${time.day}日");
     }
+  } else {
+      str.write("${time.month}月${time.day}日");
   }
-  return "${time.month}月${time.day}日 ${time.hour}:${getMinutes(time.minute)}";
+  str.write(" ${time.hour}:${getMinutes(time.minute)}");
+  return str.toString();
 }
 
 String getMonthDayMinuteSecond(int times){

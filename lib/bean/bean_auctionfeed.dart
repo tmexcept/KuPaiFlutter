@@ -163,6 +163,8 @@ class BidList {
   String sign;
   BidGoods bidGoods;
 
+  int localBackgroundType;
+
   BidList.fromParams({this.onofflineExt, this.bailPrice, this.bidStatus, this.bidType, this.browseNum, this.buyBack, this.endTime, this.focusNum, this.index,
     this.initialPrice, this.isOnoffline, this.isVideoUrl, this.leftEndTime, this.leftStartTime, this.likeNum, this.lowerPrice, this.maxPrice, this.reBid, this.redPacketBid,
     this.saleId, this.startTime, this.H5BidDetailUrl, this.dealPrice, this.sign, this.bidGoods});

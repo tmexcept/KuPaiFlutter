@@ -62,7 +62,12 @@ Future<List<BidList>> fetchDetailEntity() async {
     List<FeedEntity> feedList = feedBean.data.feedList;
     int length = feedList.length;
     for(int i=0;i<length;i++){
-      bidEntitys.addAll(feedList[i].themeInfo.bidsList);
+      List<BidList> bids = feedList[i].themeInfo.bidsList;
+      for(int j = 0;j<bids.length;j++){
+        bids[j].localBackgroundType = feedList[i].themeInfo.backgroundType;
+      }
+
+      bidEntitys.addAll(bids);
     }
   }
 
@@ -102,7 +107,12 @@ fetchDetailEntitys(State context, List<BidList> bidList) async {
     List<FeedEntity> feedList = feedBean.data.feedList;
     int length = feedList.length;
     for(int i=0;i<length;i++){
-      bidEntitys.addAll(feedList[i].themeInfo.bidsList);
+      List<BidList> bids = feedList[i].themeInfo.bidsList;
+      for(int j = 0;j<bids.length;j++){
+        bids[j].localBackgroundType = feedList[i].themeInfo.backgroundType;
+      }
+
+      bidEntitys.addAll(bids);
     }
   }
 
