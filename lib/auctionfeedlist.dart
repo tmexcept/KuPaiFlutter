@@ -27,9 +27,12 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
   static const int colorNightTextMain = 0xffffffff;
   static const int colorNightTextAssit = 0xff999999;
 
+  ScrollController _scrollController = new ScrollController();
+  bool isPerformingRequest = false;
+
   @override
   Widget build(BuildContext context) {
-    print("========================");
+    print("build========================");
     return new Scaffold(
       appBar: new AppBar(
         title: Text("show Feed Data"),
@@ -37,6 +40,24 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
       //...
       body: boxAdapterWidget(context),
     );
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    _scrollController.addListener((){
+      if(_scrollController.position.pixels == _scrollController.position.maxScrollExtent && !isPerformingRequest){
+        print("maxScrollExtent========================");
+        getDetailEntity(++_page);
+      }
+    });
+  }
+
+  @override
+  void dispose(){
+    _scrollController.dispose();
+    _cancelTimer();
+    super.dispose();
   }
 
   Timer _timer;
@@ -69,22 +90,16 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     _timer?.cancel();
   }
 
-  @override
-  void dispose(){
-    super.dispose();
-    _cancelTimer();
-  }
-
   List<Widget> showNickAddress(BidList data){
     List<Widget> widgets = [];
     widgets.add(Text(data.bidGoods.goodsName, style: TextStyle(fontSize: 15.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,));
 
     if(data.onofflineExt != null && data.onofflineExt.location != null){
       widgets.add(Row(children: <Widget>[
-            Image(image: AssetImage("lib/image/icon_location_address.png"), width: 8.0, height: 18.0,),
-            Text(data.onofflineExt.location, style: TextStyle(fontSize: 11.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,),
-          ],
-        )
+        Image(image: AssetImage("lib/image/icon_location_address.png"), width: 8.0, height: 18.0,),
+        Text(data.onofflineExt.location, style: TextStyle(fontSize: 11.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,),
+      ],
+      )
       );
     }
     return widgets;
@@ -207,20 +222,20 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
   Widget getRecommendDesc(String recommendDesc){
     return Container(padding: EdgeInsets.all(10.0),
         child:RealRichText([
-            ImageSpan(
+          ImageSpan(
               AssetImage("lib/image/dis_left_quote.png"),
               imageWidth: 12.0,
               imageHeight: 10.0
-            ),
-            TextSpan(
-              text: recommendDesc,
-              style: TextStyle(fontSize: 14, color: Colors.black,),
-            ),ImageSpan(
-                AssetImage("lib/image/dis_right_quote.png"),
-                imageWidth: 12.0,
-                imageHeight: 10.0
-            ),
-          ],
+          ),
+          TextSpan(
+            text: recommendDesc,
+            style: TextStyle(fontSize: 14, color: Colors.black,),
+          ),ImageSpan(
+              AssetImage("lib/image/dis_right_quote.png"),
+              imageWidth: 12.0,
+              imageHeight: 10.0
+          ),
+        ],
           maxLines: 2,
           overflow:TextOverflow.ellipsis,
         )
@@ -250,15 +265,15 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     _startTimer();
 
     return Container(
-      padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(10.0),
         color: Color(data.localBackgroundType == 1 ? colorDayBg : colorNightBg),
         child:  Container(
           decoration: BoxDecoration(
               border: Border(
-                  left: BorderSide(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),width: 1),
-                  top: BorderSide(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),width: 1),
-                  right: BorderSide(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),width: 1),
-                  bottom: BorderSide(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),width: 1),
+                left: BorderSide(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),width: 1),
+                top: BorderSide(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),width: 1),
+                right: BorderSide(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),width: 1),
+                bottom: BorderSide(color: Color(data.localBackgroundType == 1 ? colorDayDevider : colorNightDivider),width: 1),
               )
           ),
           child:  new Column(
@@ -293,16 +308,16 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
         //背景色
 //        color: Colors.amber,
         shape: new RoundedRectangleBorder(
-          side: const BorderSide(
-              width: 1.0,
-              color: Color(colorAssitRed)
-          ),
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(3.0),
-            topRight: const Radius.circular(3.0),
-            bottomLeft: const Radius.circular(3.0),
-            bottomRight: const Radius.circular(3.0),
-          )
+            side: const BorderSide(
+                width: 1.0,
+                color: Color(colorAssitRed)
+            ),
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(3.0),
+              topRight: const Radius.circular(3.0),
+              bottomLeft: const Radius.circular(3.0),
+              bottomRight: const Radius.circular(3.0),
+            )
         ),
         child: new Container(
           padding: EdgeInsets.only(left:5.0,top:1.0,right:5.0,bottom:1.0),
@@ -326,12 +341,12 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
           alignment: AlignmentDirectional.bottomEnd,
           children: <Widget>[new CircleAvatar(
             backgroundImage: new NetworkImage(getUserAvater(supplier.supplierPic)),),
-            Positioned(child: Image(image:  AssetImage(getSupplierLevel(supplier.level)), width: 18.0, height: 10.0,),
-              right: 0.0,bottom: 0.0,
-            ),
-        ],
-      ),
-    );
+          Positioned(child: Image(image:  AssetImage(getSupplierLevel(supplier.level)), width: 18.0, height: 10.0,),
+            right: 0.0,bottom: 0.0,
+          ),
+          ],
+        ),
+      );
 
 //    return
 //      new Container(
@@ -358,7 +373,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     return Container(
         decoration: BoxDecoration(image: DecorationImage(image: AssetImage("lib/image/icon_supper_defoult_bg.webp"), fit: BoxFit.cover)),
 //      constraints: BoxConstraints.expand(height: 50.0),
-      child:new IntrinsicHeight(child:new Row(
+        child:new IntrinsicHeight(child:new Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             getPeopleAvater(supplier),
@@ -369,8 +384,8 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   new Container(
-                      padding: EdgeInsets.only(bottom: 5.0),
-                      child:Row(
+                    padding: EdgeInsets.only(bottom: 5.0),
+                    child:Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
@@ -381,7 +396,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
                             child: Image(image: AssetImage("lib/image/high_quality.png"),height: 16.0, width: 12.0,),),
                           Offstage(offstage: supplier.supplierType != 4,
                             child: Image(image: AssetImage("lib/image/icon_pai_blue.png"),height: 15.0, width: 15.0,),),
-                      ]),
+                        ]),
                   ),
                   supplierTags(supplier, context),
                 ],
@@ -396,30 +411,58 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
             ),
           ],
         )
-      )
+        )
     );
   }
 
   List<BidList> bidList;
-  getDetailEntity(){
-    new Future(() => fetchDetailEntity())
+  getDetailEntity(int page) {
+    if(isPerformingRequest) return;
+
+    setState(() =>isPerformingRequest = true);
+
+    Map<String, String> headers = {"page":page.toString(), "pageSize":"10"};
+    new Future(() => fetchDetailEntity(headers))
         .then((bidList){
 
+          if(!mounted) return;
           setState(() {
-            this.bidList = bidList;
+            isPerformingRequest = false;
+            if(page == 1) {
+              this.bidList = [];
+              this.bidList = bidList;
+            }else
+              this.bidList.addAll(bidList);
           });
-        });
+    });
   }
+
+  int _page = 1;
 
   Widget boxAdapterWidget(context) {
     if(bidList == null || bidList.isEmpty){
-      getDetailEntity();
+      _page = 1;
+      getDetailEntity(_page);
       return Center(child: CircularProgressIndicator());
     } else {
-      return ListView.builder(
-          itemCount: bidList.length,
-          itemBuilder: (context, index) =>
-              listItem(context, index, bidList[index]));
+      return Container(constraints: BoxConstraints.expand(width: 800.0, height: 1000.0),
+        child:RefreshIndicator(child: ListView.builder(
+          itemCount: bidList.length + 1,
+          itemBuilder: (context, index) {
+            if(index == bidList.length)
+              return _buildProgressIndicator();
+            else
+              return listItem(context, index, bidList[index]);
+          },
+          controller: _scrollController,
+          physics: BouncingScrollPhysics(),
+        ),
+        onRefresh: (){
+          _page = 1;
+          getDetailEntity(_page);
+        },
+      )
+      );
     }
 
 //    return FutureBuilder<List<BidList>>(
@@ -436,5 +479,16 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
 //        return Center(child: CircularProgressIndicator());
 //      },
 //    );
+  }
+
+  Widget _buildProgressIndicator(){
+    return new Padding(padding: const EdgeInsets.all(10.0),
+      child: new Center(
+        child: Opacity(opacity: isPerformingRequest ? 1.0 : 0.0,
+          child: new CircularProgressIndicator(),
+        ),
+
+      ),
+    );
   }
 }
