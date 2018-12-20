@@ -130,17 +130,14 @@ class AuctionListItemState extends State<AuctionListItemWidget>{
 
   @override
   void dispose(){
-    super.dispose();
-  }
-
-  @override
-  void deactivate(){
-    super.deactivate();
     _cancelTimer();
+    super.dispose();
   }
 
   Timer _timer;
   _startTimer() {
+    if(_timer != null && _timer.isActive) return;
+
     _timer = new Timer.periodic(new Duration(seconds: 1), (timer) {
 //         debugPrint("data.leftEndTime = ${data.leftEndTime}");
       setState(() {

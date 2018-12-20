@@ -64,7 +64,6 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
   _startTimer() {
     //https://www.jianshu.com/p/f7a9b8c84d26
     if(_timer != null && _timer.isActive) return;
-    debugPrint("_timer.isActive = ${_timer.toString()}");
 
     _timer = new Timer.periodic(new Duration(seconds: 1), (timer) {
       BidList bidInfo;
@@ -415,26 +414,38 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     );
   }
 
-  List<BidList> bidList;
+  List<BidList> bidList = [];
   getDetailEntity(int page) {
     if(isPerformingRequest) return;
 
-    setState(() =>isPerformingRequest = true);
+    setState(() {
+      isPerformingRequest = true;
+      if(page == 1) {
+        this.bidList.clear();
+      }
+    });
+    Completer<Null> completer = new Completer<Null>();
 
     Map<String, String> headers = {"page":page.toString(), "pageSize":"10"};
     new Future(() => fetchDetailEntity(headers))
-        .then((bidList){
-
+        .then((bids){
+      completer.complete();
           if(!mounted) return;
           setState(() {
             isPerformingRequest = false;
-            if(page == 1) {
-              this.bidList = [];
-              this.bidList = bidList;
-            }else
-              this.bidList.addAll(bidList);
+
+//            if(page == 1) {
+//              this.bidList = bids;
+//            } else
+              this.bidList.addAll(bids);
           });
     });
+  }
+
+  Future<Null> getDetailEntityFirst() async {
+    _page = 1;
+    getDetailEntity(_page);
+    return;
   }
 
   int _page = 1;
@@ -445,7 +456,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
       getDetailEntity(_page);
       return Center(child: CircularProgressIndicator());
     } else {
-      return Container(constraints: BoxConstraints.expand(width: 800.0, height: 1000.0),
+      return Container(
         child:RefreshIndicator(child: ListView.builder(
           itemCount: bidList.length + 1,
           itemBuilder: (context, index) {
@@ -458,8 +469,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
           physics: BouncingScrollPhysics(),
         ),
         onRefresh: (){
-          _page = 1;
-          getDetailEntity(_page);
+          return getDetailEntityFirst();
         },
       )
       );
@@ -491,4 +501,5 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
       ),
     );
   }
+
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterapp/auctionfeedlist.dart';
-import 'package:flutterapp/auctionfeedlist_error.dart';
 import 'package:flutterapp/http_auctionfeedlist.dart';
 import 'package:flutterapp/song_relativelayout.dart';
 import 'package:flutterapp/stack_show1.dart';
@@ -133,11 +132,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 MaterialPageRoute(builder: (context) => AuctionFeedListShow())),
             icon: new Icon(Icons.android),
             label: Text("显示Feed流")),
-        RaisedButton.icon(
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AuctionFeedListError())),
-            icon: new Icon(Icons.android),
-            label: Text("显示Feed流error")),
         new RaisedButton(
           onPressed: () => Navigator.push(context,
               MaterialPageRoute(builder: (context) => SongRelativeLayout())),
