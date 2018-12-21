@@ -1,9 +1,10 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutterapp/bean/RecommendList.dart';
 import 'package:flutterapp/bean/bean_auctionfeed.dart';
 import 'package:http/http.dart' as http;
-
-import 'dart:convert';
 
 Map<String, String> initHeaders(){
   String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
@@ -37,8 +38,8 @@ Future<String> fetchDetail() async {
 
 
 Future<List<BidList>> fetchDetailEntity(Map<String, String> headers) async {
-  headers.addAll(initHeaders());
-  final response = await http.post("https://api.51kupai.com/kupai/feed/v3_list", headers: headers);
+//  headers.addAll(initHeaders());
+  final response = await http.post("https://api.51kupai.com/kupai/feed/v3_list", headers: headers, body: headers);
   AuctionFeedBean feedBean = AuctionFeedBean.fromJson(json.decode(response.body));
 
 //  String data = await DefaultAssetBundle.of(context).loadString("lib/file/file.txt");
@@ -61,6 +62,13 @@ Future<List<BidList>> fetchDetailEntity(Map<String, String> headers) async {
     }
   }
 
-//  return response.body;
   return bidEntitys;
+}
+
+Future<List<Recommend>> fetchRecommendThreeList(Map<String, String> headers) async {
+//  headers.addAll(initHeaders());
+  final response = await http.post("https://api.51kupai.com/kupai/feed/class/tag/recommend", headers: initHeaders(), body: headers);
+  RecommendThreeList list = RecommendThreeList.fromJson(json.decode(response.body));
+  debugPrint("RecommendThreeList = ${list.toString()}");
+  return list.data;
 }

@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/auctionlistitem.dart';
+import 'package:flutterapp/bean/RecommendList.dart';
 import 'package:flutterapp/bean/bean_auctionfeed.dart';
 import 'package:flutterapp/httprequest.dart';
 import 'package:flutterapp/realrichtext/real_rich_text.dart';
-import 'dart:convert';
 
 class AuctionFeedListShow extends StatefulWidget {
   @override
@@ -118,9 +118,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
       child: Stack(
         children: <Widget>[
           Container(constraints:BoxConstraints.expand(),child: Image(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic)), fit: BoxFit.fill,)),
-          Positioned(child: new AuctionListItemWidget(data: data),
-            top: 10.0,
-          ),
+          Positioned(child: new AuctionListItemWidget(data: data),top: 10.0,),
           Align(
             child: Container(
               padding: EdgeInsets.only(top: 15.0, left: 10, right: 10,bottom: 2.0),
@@ -449,21 +447,33 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
   }
 
   int _page = 1;
+  int addElse = 1;
 
   Widget boxAdapterWidget(context) {
+    if(recommendTwo.length != 0)
+      addElse = 2;
+
     if(bidList == null || bidList.isEmpty){
       _page = 1;
+      getRecommendTwo();
       getDetailEntity(_page);
       return Center(child: CircularProgressIndicator());
     } else {
       return Container(
         child:RefreshIndicator(child: ListView.builder(
-          itemCount: bidList.length + 1,
+          itemCount: bidList.length + addElse,
           itemBuilder: (context, index) {
-            if(index == bidList.length)
+            if(addElse == 2 && index == 0){
+              return new Column(
+                mainAxisSize: MainAxisSize.min,
+                children: _buildHead(),
+              );
+            } else if(index == bidList.length+addElse - 1)
               return _buildProgressIndicator();
-            else
-              return listItem(context, index, bidList[index]);
+            else {
+              int position = index + addElse - 1;
+              return listItem(context, position, bidList[position]);
+            }
           },
           controller: _scrollController,
           physics: BouncingScrollPhysics(),
@@ -502,4 +512,88 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     );
   }
 
+  List<Widget> _buildHead(){
+    List<Widget> widgets = [];
+    if(recommendTwo.length > 0){
+      widgets.add(new GridView.count(crossAxisCount: 2,
+        primary: false,
+        childAspectRatio: 2.5,
+        crossAxisSpacing: 5.0,
+        children: _buildRecommend(),
+        shrinkWrap: true,
+      ));
+    }
+    return widgets;
+  }
+
+  List<Widget> _buildRecommend(){
+    List<Widget> widgets = [];
+    for(int i=0;i<recommendTwo.length;i++)
+      widgets.add(_buildRecommentTwo(recommendTwo[i], i));
+    return widgets;
+  }
+
+  bool getRecommend = false;
+  getRecommendTwo(){
+    if(getRecommend) return;
+
+    getRecommend = true;
+    Map<String, String> map = {"position":"2"};
+    new Future(() =>fetchRecommendThreeList(map)).then((recommends){
+      setState(() {
+        recommendTwo = recommends;
+      });
+    });
+  }
+
+  List<Recommend> recommendTwo = [];
+  Widget _buildRecommentTwo(Recommend recommend, int index){
+    return Column(children: <Widget>[
+      Flexible(child: Row(children: _buildRecommendItems(recommend, index),),),
+      Container(height: 1.0,width: 1000.0, color: Color(0xff000000),)
+    ],);
+  }
+
+  List<Widget> _buildRecommendItems(Recommend recommend, int index){
+    List<Widget> widgets = [];
+    widgets.add(
+        Flexible(child: Padding(padding: EdgeInsets.all(10.0),
+      child: _buildRecommentTwoContent(recommend),)));
+    if((index+1) % 2 == 1){
+      widgets.add(Container(height: 200.0,width: 1.0, color: Color(colorDayDevider),));
+    }
+    return widgets;
+  }
+
+  Widget _buildRecommentTwoContent(Recommend recommend){
+    return new Row(children:<Widget>[
+      Expanded(
+        child: new Column(children: <Widget>[
+          Text(recommend.className, style: TextStyle(fontSize: 15), textAlign: TextAlign.start,),
+          Text(recommend.desc, style: TextStyle(fontSize: 11),textAlign: TextAlign.start, maxLines: 1, overflow: TextOverflow.ellipsis,),
+        ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,),
+      ),
+      new Stack(children: <Widget>[
+        Image(image: NetworkImage(getPhotoUrl(recommend.cover, 100),), width: 55, height: 55, fit: BoxFit.cover,),
+        Image(image: NetworkImage(getPhotoUrl(recommend.cover, 100),), height: 15, fit: BoxFit.contain,),
+      ],
+        alignment: AlignmentDirectional.topEnd,
+      ),
+    ], crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+    );
+  }
+
+  Widget _buildRecommentTwo2(Recommend recommend){
+    return new Container(
+//      height: 50,
+      child: new Stack(children: <Widget>[
+        new Column(children: <Widget>[
+          CircleAvatar(radius: 50, backgroundImage: NetworkImage(getPhotoUrl(recommend.cover, 100),),),
+          Text(recommend.className, style: TextStyle(fontSize: 13, color: Color(0xff333333)),)
+        ],)
+      ],),);
+  }
 }
