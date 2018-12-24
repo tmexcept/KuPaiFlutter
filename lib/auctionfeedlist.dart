@@ -13,7 +13,7 @@ class AuctionFeedListShow extends StatefulWidget {
   State<StatefulWidget> createState() => new AuctionFeedListState();
 }
 
-class AuctionFeedListState extends State<AuctionFeedListShow> {
+class AuctionFeedListState extends State<AuctionFeedListShow> with SingleTickerProviderStateMixin{
 
   static const int colorAssitRed = 0xffc4311d;
   static const int colorMain = 0xffb28147;
@@ -456,6 +456,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     if(bidList == null || bidList.isEmpty){
       _page = 1;
       getRecommendTwo();
+      getRecommendThree();
       getDetailEntity(_page);
       return Center(child: CircularProgressIndicator());
     } else {
@@ -514,13 +515,30 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
 
   List<Widget> _buildHead(){
     List<Widget> widgets = [];
+    debugPrint("recommendTwo.length  = ${recommendTwo.length }");
     if(recommendTwo.length > 0){
       widgets.add(new GridView.count(crossAxisCount: 2,
         primary: false,
         childAspectRatio: 2.5,
-        crossAxisSpacing: 5.0,
         children: _buildRecommend(),
         shrinkWrap: true,
+      ));
+    }
+    debugPrint("recommendThree.length  = ${recommendThree.length }");
+    if(recommendThree.length > 0){
+      TabController _tabController = new TabController(vsync: this, length: recommendThree.length);
+
+      widgets.add(Container(height: 50,
+          child:Container(child:new TabBar(
+          controller: _tabController,
+          tabs: recommendThree.map((item) {
+              return new Tab(text: item.className??'错误');
+            }).toList(),
+              labelColor: Colors.black,
+              indicatorColor: Colors.blue,
+            isScrollable: true,
+          ),),
+        color: Colors.white,
       ));
     }
     return widgets;
@@ -533,11 +551,12 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     return widgets;
   }
 
-  bool getRecommend = false;
+  bool getRecommendTwoing = false;
+  List<Recommend> recommendTwo = [];
   getRecommendTwo(){
-    if(getRecommend) return;
+    if(getRecommendTwoing) return;
 
-    getRecommend = true;
+    getRecommendTwoing = true;
     Map<String, String> map = {"position":"2"};
     new Future(() =>fetchRecommendThreeList(map)).then((recommends){
       setState(() {
@@ -546,18 +565,18 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     });
   }
 
-  List<Recommend> recommendTwo = [];
   Widget _buildRecommentTwo(Recommend recommend, int index){
-    return Column(children: <Widget>[
+    return Container(child:Column(children: <Widget>[
       Flexible(child: Row(children: _buildRecommendItems(recommend, index),),),
-      Container(height: 1.0,width: 1000.0, color: Color(0xff000000),)
-    ],);
+      Container(height: 1.0,width: 200.0, color: Color(colorDayDevider),)
+    ],),
+      color: Colors.white,
+    );
   }
 
   List<Widget> _buildRecommendItems(Recommend recommend, int index){
     List<Widget> widgets = [];
-    widgets.add(
-        Flexible(child: Padding(padding: EdgeInsets.all(10.0),
+    widgets.add(Flexible(child: Padding(padding: EdgeInsets.all(10.0),
       child: _buildRecommentTwoContent(recommend),)));
     if((index+1) % 2 == 1){
       widgets.add(Container(height: 200.0,width: 1.0, color: Color(colorDayDevider),));
@@ -586,14 +605,18 @@ class AuctionFeedListState extends State<AuctionFeedListShow> {
     );
   }
 
-  Widget _buildRecommentTwo2(Recommend recommend){
-    return new Container(
-//      height: 50,
-      child: new Stack(children: <Widget>[
-        new Column(children: <Widget>[
-          CircleAvatar(radius: 50, backgroundImage: NetworkImage(getPhotoUrl(recommend.cover, 100),),),
-          Text(recommend.className, style: TextStyle(fontSize: 13, color: Color(0xff333333)),)
-        ],)
-      ],),);
+
+  bool getRecommendThreeing = false;
+  List<Recommend> recommendThree = [];
+  getRecommendThree(){
+      if(getRecommendThreeing) return;
+
+      getRecommendThreeing = true;
+      Map<String, String> map = {"position":"3"};
+      new Future(() =>fetchRecommendThreeList(map)).then((recommends){
+          setState(() {
+              recommendThree = recommends;
+          });
+      });
   }
 }
