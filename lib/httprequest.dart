@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/bean/RecommendList.dart';
 import 'package:flutterapp/bean/bean_auctionfeed.dart';
+import 'package:flutterapp/bean/tipslist.dart';
 import 'package:http/http.dart' as http;
 
 Map<String, String> initHeaders(){
@@ -71,4 +72,13 @@ Future<List<Recommend>> fetchRecommendThreeList(Map<String, String> headers) asy
   RecommendThreeList list = RecommendThreeList.fromJson(json.decode(response.body));
   debugPrint("RecommendThreeList = ${list.toString()}");
   return list.data;
+}
+
+Future<List<Tips>> fetchTipsList() async {
+  final response = await http.get("https://bkapi.51kupai.com/app/tips/queryTips");
+
+//  debugPrint("response = ${response.body}");
+  TipsList list = TipsList.fromJson(json.decode(response.body));
+  debugPrint("RecommendThreeList = ${list.toString()}");
+  return list.data.tips;
 }

@@ -389,7 +389,6 @@ String getCountDownStatus3(int leftEndTime, int endTime) {
 }
 
 String getUserAvater(String picUrl){
-//  debugPrint("recommendPic = ${picUrl}");
 
   if(picUrl == null)
     return "https://img.51kupai.com/pic/webp/110-110-a2cb7ad70785b08959031a251e0d328a/0";
@@ -401,12 +400,13 @@ String getUserAvater(String picUrl){
 String getAuctionFeedCover(String pic){
   List<String> pics = pic.split(",");
   String cover = getPhotoUrl(pics[0], 500);
-  debugPrint("cover = ${cover}");
+//  debugPrint("cover = ${cover}");
   return cover;
 }
 
 String IMAGE_BASE_URL = "https://img.51kupai.com/pic/webp/";
 String getPhotoUrl(String picid, int size) {
+  debugPrint("picid = ${picid}");
   if(picid.isEmpty) return "";
 
   if(picid.startsWith("http://")||picid.startsWith("https://")) {
@@ -423,6 +423,5 @@ String getPhotoUrl(String picid, int size) {
 }
 
 String getSupplierLevel(int level){
-  // ignore: unnecessary_brace_in_string_interps
   return "lib/image/supplier_level/ins_level_${level}.png";
 }

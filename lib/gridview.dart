@@ -43,7 +43,7 @@ class _ShopFragment extends State<ShopPageFragment>{
         ),
             childrenDelegate: new SliverChildBuilderDelegate(
                     (context,index){
-                    return new Image.asset("images/homes.jpg");
+                    return new Image.asset("lib/image/icon_video.png");
                 },
                 childCount: 30,
             ),

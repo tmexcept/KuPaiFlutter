@@ -5,15 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/auctionlistitem.dart';
 import 'package:flutterapp/bean/RecommendList.dart';
 import 'package:flutterapp/bean/bean_auctionfeed.dart';
+import 'package:flutterapp/bean/tipslist.dart';
 import 'package:flutterapp/httprequest.dart';
 import 'package:flutterapp/realrichtext/real_rich_text.dart';
+import 'package:flutterapp/widget/carousel.dart';
 
 class AuctionFeedListShow extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new AuctionFeedListState();
 }
 
-class AuctionFeedListState extends State<AuctionFeedListShow> with SingleTickerProviderStateMixin{
+class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProviderStateMixin{
 
   static const int colorAssitRed = 0xffc4311d;
   static const int colorMain = 0xffb28147;
@@ -455,6 +457,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with SingleTickerP
 
     if(bidList == null || bidList.isEmpty){
       _page = 1;
+      getTipsList();
       getRecommendTwo();
       getRecommendThree();
       getDetailEntity(_page);
@@ -515,6 +518,26 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with SingleTickerP
 
   List<Widget> _buildHead(){
     List<Widget> widgets = [];
+    debugPrint("TipsList.length  = ${tipsList.length }");
+    if(tipsList.length > 0){
+      widgets.add(new Container(
+        height: 200.0,
+        child: SyCarousel(
+          autoPlay: true,
+          dotSize: 10.0,
+          showIndicators: true,
+          children: tipsList.map((item) {
+            return Image.network(
+              getPhotoUrl(item.imageUrlNew, 500),
+              fit: BoxFit.cover,
+            );
+          }).toList(),
+        ),
+      ));
+    }
+
+    widgets.add(Container(color: Colors.grey[120], height: 5.0,));
+
     debugPrint("recommendTwo.length  = ${recommendTwo.length }");
     if(recommendTwo.length > 0){
       widgets.add(new GridView.count(crossAxisCount: 2,
@@ -524,6 +547,8 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with SingleTickerP
         shrinkWrap: true,
       ));
     }
+
+    widgets.add(Container(color: Colors.grey[120], height: 5.0,));
     debugPrint("recommendThree.length  = ${recommendThree.length }");
     if(recommendThree.length > 0){
       TabController _tabController = new TabController(vsync: this, length: recommendThree.length);
@@ -605,7 +630,6 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with SingleTickerP
     );
   }
 
-
   bool getRecommendThreeing = false;
   List<Recommend> recommendThree = [];
   getRecommendThree(){
@@ -616,6 +640,21 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with SingleTickerP
       new Future(() =>fetchRecommendThreeList(map)).then((recommends){
           setState(() {
               recommendThree = recommends;
+          });
+      });
+  }
+
+  bool getTipsListing = false;
+  List<Tips> tipsList = [];
+  getTipsList(){
+      if(getTipsListing) return;
+
+      getTipsListing = true;
+      new Future(() =>fetchTipsList()).then((recommends){
+        if(recommends == null) return;
+
+          setState(() {
+              tipsList = recommends;
           });
       });
   }
