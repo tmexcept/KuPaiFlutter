@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/auctionlistitem.dart';
 import 'package:flutterapp/bean/RecommendList.dart';
 import 'package:flutterapp/bean/bean_auctionfeed.dart';
+import 'package:flutterapp/bean/classconfiglist.dart';
 import 'package:flutterapp/bean/tipslist.dart';
 import 'package:flutterapp/httprequest.dart';
 import 'package:flutterapp/realrichtext/real_rich_text.dart';
@@ -458,6 +459,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
     if(bidList == null || bidList.isEmpty){
       _page = 1;
       getTipsList();
+      getClassConfigList();
       getRecommendTwo();
       getRecommendThree();
       getDetailEntity(_page);
@@ -535,6 +537,45 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
         ),
       ));
     }
+    debugPrint("classConfigList.length = ${classConfigList.length}");
+    if(classConfigList.length > 0){
+
+//      widgets.add(new GridView.count(crossAxisCount: 4,
+//        primary: false,
+//        children: _buildClassConfigItems(),
+//        shrinkWrap: true,
+//      ));
+
+//      widgets.add(new GridView.custom(
+//        primary: false,
+//        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+//          crossAxisCount: 4,
+//        ),
+//        childrenDelegate: new SliverChildBuilderDelegate(
+//              (context,i){
+//            return _buildClassConfigItem(classConfigList[i]);
+//          },
+//          childCount: classConfigList.length,
+//        ),
+//        shrinkWrap: true,
+//      ));
+
+      //嵌套到listview之后影响listview的上下滑动，必须添加primary=false
+      widgets.add(Flexible(child: Container(child:GridView.builder(
+        primary: false,
+        itemCount: classConfigList.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4, mainAxisSpacing: 5.0),
+        itemBuilder: (context, i){
+          debugPrint("_buildClassConfigItem   $i");
+          return _buildClassConfigItem(classConfigList[i]);
+        },
+        shrinkWrap: true,
+      ),
+        color: Colors.white,
+      ),
+      ),
+      );
+    }
 
     widgets.add(Container(color: Colors.grey[120], height: 5.0,));
 
@@ -557,12 +598,18 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
           child:Container(child:new TabBar(
           controller: _tabController,
           tabs: recommendThree.map((item) {
-              return new Tab(text: item.className??'错误');
+              return new Tab(text: item.className??'错误',);
             }).toList(),
-              labelColor: Colors.black,
-              indicatorColor: Colors.blue,
+            labelColor: Color(colorMain),
+            indicatorColor: Color(colorMain),
             isScrollable: true,
-          ),),
+            unselectedLabelColor: Colors.black,
+            indicatorWeight: 1.0,
+            indicatorPadding:EdgeInsets.only(left: 15.0, right: 15.0),
+//            indicator: BoxDecoration(color: Colors.white,),
+//            labelPadding: EdgeInsets.only(left: 10.0, right: 10.0),
+          ),
+          ),
         color: Colors.white,
       ));
     }
@@ -637,9 +684,11 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
 
       getRecommendThreeing = true;
       Map<String, String> map = {"position":"3"};
-      new Future(() =>fetchRecommendThreeList(map)).then((recommends){
-          setState(() {
-              recommendThree = recommends;
+      new Future(() =>fetchRecommendThreeList(map)).then((items){
+        if(items == null) return;
+
+        setState(() {
+              recommendThree = items;
           });
       });
   }
@@ -650,12 +699,48 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
       if(getTipsListing) return;
 
       getTipsListing = true;
-      new Future(() =>fetchTipsList()).then((recommends){
-        if(recommends == null) return;
+      new Future(() =>fetchTipsList()).then((items){
+        if(items == null) return;
 
           setState(() {
-              tipsList = recommends;
+              tipsList = items;
           });
       });
+  }
+
+  bool getClassConfigListing = false;
+  List<ClassConfig> classConfigList = [];
+  getClassConfigList(){
+      if(getClassConfigListing) return;
+
+      getClassConfigListing = true;
+      Map<String, String> map = {"configType":"2"};//class_config类型 1：2.9配置 2:主打品牌
+      new Future(() =>fetchClassConfigList(map)).then((items){
+        if(items == null) return;
+          setState(() {
+              classConfigList = items;
+          });
+      });
+  }
+
+  List<Widget> _buildClassConfigItems(){
+    List<Widget> lists = [];
+    lists.add(_buildClassConfigItem(classConfigList[0]));
+    lists.add(_buildClassConfigItem(classConfigList[1]));
+    lists.add(_buildClassConfigItem(classConfigList[2]));
+    lists.add(_buildClassConfigItem(classConfigList[3]));
+    return lists;
+  }
+
+  Widget _buildClassConfigItem(ClassConfig classConfig){
+    return Container(child: Column(crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+      Image.network(getPhotoUrl(classConfig.pic, 100), height: 50, width: 50,),
+      Padding(padding: EdgeInsets.all(5.0),
+          child:Text(classConfig.className, style: TextStyle(color: Colors.grey, fontSize: 13.0),)),
+    ],
+    ),
+    );
   }
 }

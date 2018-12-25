@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/bean/RecommendList.dart';
 import 'package:flutterapp/bean/bean_auctionfeed.dart';
+import 'package:flutterapp/bean/classconfiglist.dart';
 import 'package:flutterapp/bean/tipslist.dart';
 import 'package:http/http.dart' as http;
 
@@ -46,7 +47,7 @@ Future<List<BidList>> fetchDetailEntity(Map<String, String> headers) async {
 //  String data = await DefaultAssetBundle.of(context).loadString("lib/file/file.txt");
 //  AuctionFeedBean feedBean = AuctionFeedBean.fromJson(json.decode(data));
 
-  debugPrint("****${response.body}");
+//  debugPrint("fetchDetailEntity = ${response.body}");
   List<BidList> bidEntitys;
 
   if(feedBean.data != null  && feedBean.status){
@@ -69,16 +70,22 @@ Future<List<BidList>> fetchDetailEntity(Map<String, String> headers) async {
 Future<List<Recommend>> fetchRecommendThreeList(Map<String, String> headers) async {
 //  headers.addAll(initHeaders());
   final response = await http.post("https://api.51kupai.com/kupai/feed/class/tag/recommend", headers: initHeaders(), body: headers);
+//  debugPrint("RecommendThreeList = ${response.body}");
   RecommendThreeList list = RecommendThreeList.fromJson(json.decode(response.body));
-  debugPrint("RecommendThreeList = ${list.toString()}");
   return list.data;
 }
 
 Future<List<Tips>> fetchTipsList() async {
   final response = await http.get("https://bkapi.51kupai.com/app/tips/queryTips");
 
-//  debugPrint("response = ${response.body}");
+//  debugPrint("fetchTipsList = ${response.body}");
   TipsList list = TipsList.fromJson(json.decode(response.body));
-  debugPrint("RecommendThreeList = ${list.toString()}");
   return list.data.tips;
+}
+Future<List<ClassConfig>> fetchClassConfigList(Map<String, String> headers) async {
+  final response = await http.post("https://api.51kupai.com/kupai/feed/getClassConfigListByType", body: headers);
+
+  debugPrint("fetchClassConfigList = ${response.body}");
+  ClassConfigList list = ClassConfigList.fromJson(json.decode(response.body));
+  return list.data;
 }

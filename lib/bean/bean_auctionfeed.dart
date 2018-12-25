@@ -406,7 +406,7 @@ String getAuctionFeedCover(String pic){
 
 String IMAGE_BASE_URL = "https://img.51kupai.com/pic/webp/";
 String getPhotoUrl(String picid, int size) {
-  debugPrint("picid = ${picid}");
+//  debugPrint("picid = ${picid}");
   if(picid.isEmpty) return "";
 
   if(picid.startsWith("http://")||picid.startsWith("https://")) {

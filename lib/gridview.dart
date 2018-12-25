@@ -22,7 +22,8 @@ class _ShopFragment extends State<ShopPageFragment>{
                 _shopTilte("精品推荐"),
                 new Flexible(
                     flex: 1,
-                    child: _List(),
+//                    child: _List(),
+                    child: _Gird1(),
                 )
             ],
         ));
@@ -52,7 +53,7 @@ class _ShopFragment extends State<ShopPageFragment>{
     }
     //第三种
     _GirdExtent(){
-        return new SliverGrid.extent(maxCrossAxisExtent: 1080.0,
+        return new SliverGrid.extent(maxCrossAxisExtent: 500.0,
             mainAxisSpacing: 8.0,
             children: _getGrid(),
         );
