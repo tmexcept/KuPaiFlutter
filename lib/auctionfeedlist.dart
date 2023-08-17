@@ -465,6 +465,7 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
       getDetailEntity(_page);
       return Center(child: CircularProgressIndicator());
     } else {
+      debugPrint("bidList.length  = ${bidList.length }  addElse = $addElse");
       return Container(
         child:RefreshIndicator(child: ListView.builder(
           itemCount: bidList.length + addElse,
@@ -590,16 +591,20 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
     }
 
     widgets.add(Container(color: Colors.grey[120], height: 5.0,));
+    widgets.add(_buildBidsTitle());
+
     debugPrint("recommendThree.length  = ${recommendThree.length }");
     if(recommendThree.length > 0){
-      TabController _tabController = new TabController(vsync: this, length: recommendThree.length);
+      TabController _tabController = new TabController(vsync: this, length: recommendThree.length+1);
+      List<Widget> items = recommendThree.map((item) {
+          return new Tab(text: item.className??'错误',);
+        }).toList();
+      items.insert(0, new Tab(text: "今日热拍"));
 
       widgets.add(Container(height: 50,
           child:Container(child:new TabBar(
-          controller: _tabController,
-          tabs: recommendThree.map((item) {
-              return new Tab(text: item.className??'错误',);
-            }).toList(),
+            controller: _tabController,
+            tabs: items,
             labelColor: Color(colorMain),
             indicatorColor: Color(colorMain),
             isScrollable: true,
@@ -741,6 +746,35 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
           child:Text(classConfig.className, style: TextStyle(color: Colors.grey, fontSize: 13.0),)),
     ],
     ),
+    );
+  }
+
+  Widget _buildBidsTitle(){
+    return Container(
+      padding: EdgeInsets.only(left: 10.0, right: 10.0),
+        color: Colors.white,
+        height: 40.0,
+        child:Row(children: <Widget>[
+          Expanded(child: Text("热拍推荐", style:TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0))),
+          new Container(
+            padding: EdgeInsets.only(left:10.0, right: 10.0, top: 5.0, bottom: 5.0),
+            decoration: BoxDecoration(color: Color(colorMain), borderRadius: BorderRadius.all(Radius.circular(100.0)),),
+            child: Row(children: <Widget>[
+              Image.asset("lib/image/high_quality.png", width: 15.0,height: 15.0,),
+              new Text("历史",style: new TextStyle(fontSize: 11.0, color: Color(colorAssitRed)),),
+            ]),
+          ),
+          new Container(
+            margin: EdgeInsets.only(left: 10.0),
+            padding: EdgeInsets.only(left:10.0, right: 10.0, top: 5.0, bottom: 5.0),
+            decoration: BoxDecoration(color: Color(colorMain), borderRadius: BorderRadius.all(Radius.circular(100.0)),),
+            child: Row(children: <Widget>[
+              Image.asset("lib/image/high_quality.png", width: 15.0,height: 15.0,),
+              new Text("预展",style: new TextStyle(fontSize: 11.0, color: Color(colorAssitRed)),),
+            ],
+            ),
+          )
+          ,]),
     );
   }
 }

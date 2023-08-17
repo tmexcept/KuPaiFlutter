@@ -28,7 +28,7 @@ public class MainActivity extends FlutterActivity {
               public void onMethodCall(MethodCall call, MethodChannel.Result result) {
                 Log.e("tag", "getBatteryLevel");
                 if (call.method.equals("getBatteryLevel")) {
-                  int batteryLevel = getBatteryLevel();
+                  int batteryLevel = getBatteryLevels();
 
                   if (batteryLevel != -1) {
                     result.success(batteryLevel);
@@ -41,7 +41,7 @@ public class MainActivity extends FlutterActivity {
               }
             });
   }
-  private int getBatteryLevel() {
+  private int getBatteryLevels() {
     int batteryLevel = -1;
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       BatteryManager batteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
