@@ -94,22 +94,14 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
 
   List<Widget> showNickAddress(BidList data){
     List<Widget> widgets = [];
-    widgets.add(Container(
-        padding: EdgeInsets.only(left: 10.0,),
-          child:Text(data.bidGoods.goodsName, style: TextStyle(fontSize: 15.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,
-          ),
-      )
-    );
+    widgets.add(Text(data.bidGoods.goodsName, style: TextStyle(fontSize: 15.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,));
+
     if(data.onofflineExt != null && data.onofflineExt.location != null){
-      widgets.add(
-          Container(
-              padding: EdgeInsets.only(left: 10.0,),
-              child:Row(children: <Widget>[
-                  Image(image: AssetImage("lib/image/icon_location_address.png"), width: 8.0, height: 18.0,),
-                  Text(data.onofflineExt.location, style: TextStyle(fontSize: 11.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,),
-                ],
-              )
-          )
+      widgets.add(Row(children: <Widget>[
+        Image(image: AssetImage("lib/image/icon_location_address.png"), width: 8.0, height: 18.0,),
+        Text(data.onofflineExt.location, style: TextStyle(fontSize: 11.0, color: Colors.white),overflow: TextOverflow.ellipsis, softWrap: false,),
+      ],
+      )
       );
     }
     return widgets;
@@ -119,13 +111,6 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
     if(data.isVideoUrl == 1)
       widgets.add(Image(image: AssetImage("lib/image/icon_video.png"), width: 30.0, height: 30.0,));
     widgets.add(Text("${data.browseNum}人关注", style: TextStyle(fontSize: 11.0, color: Colors.white),textAlign: TextAlign.right,));
-    widgets.add(Container(
-        padding: EdgeInsets.only(right: 10.0,),
-        child:Image(image: AssetImage("lib/image/icon_video.png"), width: 30.0, height: 30.0,
-        )));
-    widgets.add(Container(
-        padding: EdgeInsets.only(right: 10.0,),
-        child:Text("${data.browseNum}人关注", style: TextStyle(fontSize: 11.0, color: Colors.white),textAlign: TextAlign.right,)));
     return widgets;
   }
 
@@ -191,60 +176,6 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
             ),
             new Text(rightPrice,
               style: new TextStyle(fontSize: 15.0,fontWeight: FontWeight.w400,color: Color(data.localBackgroundType == 1 ? colorDayTextMain : colorNightTextMain),),
-      decoration: new BoxDecoration(image: new DecorationImage(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic)))),
-      child: Stack(
-        children: <Widget>[
-//                    Image(image: new NetworkImage(getAuctionFeedCover(data.bidGoods.pic))),
-          Positioned(child:Material(
-            color: Color(0xffc4311d),
-            child: new Container(
-              padding: const EdgeInsets.only(left:10.0,top:5.0,right:10.0,bottom:5.0),
-              child: new Text('倒计时',style: new TextStyle(fontSize: 11.0),),
-            ),
-            shape: RoundedRectangleBorder(side: BorderSide(style: BorderStyle.none), borderRadius: BorderRadius.horizontal(right: Radius.circular(50))),
-          ),
-            top: 10.0,
-          ),
-          Align(
-            child: IntrinsicHeight(
-                child: Container(
-                  padding: EdgeInsets.only(top: 15.0),
-                  constraints: BoxConstraints.expand(height: 75.0),
-                  decoration: new BoxDecoration(
-                      gradient: new LinearGradient(
-                          begin: Alignment.bottomCenter, end: Alignment.topCenter, colors: [Color(0xff000000), Color(0x000000)])),
-                  child:new Row(children: <Widget>[
-                    Expanded(child:Column(children: showNickAddress(data), crossAxisAlignment: CrossAxisAlignment.start,),),
-                    Column(children: showLiveAttention(data), crossAxisAlignment: CrossAxisAlignment.end,),
-                  ]
-                  ),
-                )
-            ),
-            alignment: AlignmentDirectional.bottomStart,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget listItem(context, index, BidList data) {
-    TextTheme textTheme = Theme.of(context).textTheme;
-
-    Supplier supplier = data.bidGoods.supplier;
-    return Card(
-        color: Color(0xff4a4a4a),
-        child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 1.0),
-            decoration: new BoxDecoration(
-              color: Colors.white,
-            ),
-            child:  new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                getRecommendUser(supplier, textTheme),
-                setAuctionFeedCover(data),
-              ],
             ),
           ],
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -368,7 +299,6 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
 //        )
 //      );
 //    }
-<<<<<<< HEAD
 
     List<Material> tags = [];
     for(int i=0;i<supplier.tags.length && supplier.tags.length>0;i++){
@@ -392,21 +322,6 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
         child: new Container(
           padding: EdgeInsets.only(left:5.0,top:1.0,right:5.0,bottom:1.0),
           child: new Text(supplier.tags[i],style: new TextStyle(fontSize: 9.0, color: Color(colorAssitRed)),),
-=======
-    List<Material> tags = [];
-    for(int i=0;i<supplier.tags.length;i++){
-      tags.add(Material(
-        //背景色
-//        color: Colors.amber,
-        shape: new StadiumBorder(
-          side: const BorderSide(
-              width: 1.0,
-              color: Color(0xffc4311d)
-          ),
-        ),
-        child: new Container(
-          padding: EdgeInsets.only(left:10.0,top:3.0,right:10.0,bottom:5.0),
-          child: new Text(supplier.tags[i],style: new TextStyle(fontSize: 11.0),),
         ),
       )
       );
@@ -426,9 +341,9 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
           alignment: AlignmentDirectional.bottomEnd,
           children: <Widget>[new CircleAvatar(
             backgroundImage: new NetworkImage(getUserAvater(supplier.supplierPic)),),
-          Positioned(child: Image(image:  AssetImage(getSupplierLevel(supplier.level)), width: 18.0, height: 10.0,),
-            right: 0.0,bottom: 0.0,
-          ),
+            Positioned(child: Image(image:  AssetImage(getSupplierLevel(supplier.level)), width: 18.0, height: 10.0,),
+              right: 0.0,bottom: 0.0,
+            ),
           ],
         ),
       );
@@ -516,15 +431,15 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
     new Future(() => fetchDetailEntity(headers))
         .then((bids){
       completer.complete();
-          if(!mounted) return;
-          setState(() {
-            isPerformingRequest = false;
+      if(!mounted) return;
+      setState(() {
+        isPerformingRequest = false;
 
 //            if(page == 1) {
 //              this.bidList = bids;
 //            } else
-              this.bidList.addAll(bids);
-          });
+        this.bidList.addAll(bids);
+      });
     });
   }
 
@@ -550,30 +465,29 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
       getDetailEntity(_page);
       return Center(child: CircularProgressIndicator());
     } else {
-      debugPrint("bidList.length  = ${bidList.length }  addElse = $addElse");
       return Container(
-        child:RefreshIndicator(child: ListView.builder(
-          itemCount: bidList.length + addElse,
-          itemBuilder: (context, index) {
-            if(addElse == 2 && index == 0){
-              return new Column(
-                mainAxisSize: MainAxisSize.min,
-                children: _buildHead(),
-              );
-            } else if(index == bidList.length+addElse - 1)
-              return _buildProgressIndicator();
-            else {
-              int position = index + addElse - 1;
-              return listItem(context, position, bidList[position]);
-            }
-          },
-          controller: _scrollController,
-          physics: BouncingScrollPhysics(),
-        ),
-        onRefresh: (){
-          return getDetailEntityFirst();
-        },
-      )
+          child:RefreshIndicator(child: ListView.builder(
+            itemCount: bidList.length + addElse,
+            itemBuilder: (context, index) {
+              if(addElse == 2 && index == 0){
+                return new Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: _buildHead(),
+                );
+              } else if(index == bidList.length+addElse - 1)
+                return _buildProgressIndicator();
+              else {
+                int position = index + addElse - 1;
+                return listItem(context, position, bidList[position]);
+              }
+            },
+            controller: _scrollController,
+            physics: BouncingScrollPhysics(),
+          ),
+            onRefresh: (){
+              return getDetailEntityFirst();
+            },
+          )
       );
     }
 
@@ -676,30 +590,26 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
     }
 
     widgets.add(Container(color: Colors.grey[120], height: 5.0,));
-    widgets.add(_buildBidsTitle());
-
     debugPrint("recommendThree.length  = ${recommendThree.length }");
     if(recommendThree.length > 0){
-      TabController _tabController = new TabController(vsync: this, length: recommendThree.length+1);
-      List<Widget> items = recommendThree.map((item) {
-          return new Tab(text: item.className??'错误',);
-        }).toList();
-      items.insert(0, new Tab(text: "今日热拍"));
+      TabController _tabController = new TabController(vsync: this, length: recommendThree.length);
 
       widgets.add(Container(height: 50,
-          child:Container(child:new TabBar(
-            controller: _tabController,
-            tabs: items,
-            labelColor: Color(colorMain),
-            indicatorColor: Color(colorMain),
-            isScrollable: true,
-            unselectedLabelColor: Colors.black,
-            indicatorWeight: 1.0,
-            indicatorPadding:EdgeInsets.only(left: 15.0, right: 15.0),
+        child:Container(child:new TabBar(
+          controller: _tabController,
+          tabs: recommendThree.map((item) {
+            return new Tab(text: item.className??'错误',);
+          }).toList(),
+          labelColor: Color(colorMain),
+          indicatorColor: Color(colorMain),
+          isScrollable: true,
+          unselectedLabelColor: Colors.black,
+          indicatorWeight: 1.0,
+          indicatorPadding:EdgeInsets.only(left: 15.0, right: 15.0),
 //            indicator: BoxDecoration(color: Colors.white,),
 //            labelPadding: EdgeInsets.only(left: 10.0, right: 10.0),
-          ),
-          ),
+        ),
+        ),
         color: Colors.white,
       ));
     }
@@ -770,47 +680,47 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
   bool getRecommendThreeing = false;
   List<Recommend> recommendThree = [];
   getRecommendThree(){
-      if(getRecommendThreeing) return;
+    if(getRecommendThreeing) return;
 
-      getRecommendThreeing = true;
-      Map<String, String> map = {"position":"3"};
-      new Future(() =>fetchRecommendThreeList(map)).then((items){
-        if(items == null) return;
+    getRecommendThreeing = true;
+    Map<String, String> map = {"position":"3"};
+    new Future(() =>fetchRecommendThreeList(map)).then((items){
+      if(items == null) return;
 
-        setState(() {
-              recommendThree = items;
-          });
+      setState(() {
+        recommendThree = items;
       });
+    });
   }
 
   bool getTipsListing = false;
   List<Tips> tipsList = [];
   getTipsList(){
-      if(getTipsListing) return;
+    if(getTipsListing) return;
 
-      getTipsListing = true;
-      new Future(() =>fetchTipsList()).then((items){
-        if(items == null) return;
+    getTipsListing = true;
+    new Future(() =>fetchTipsList()).then((items){
+      if(items == null) return;
 
-          setState(() {
-              tipsList = items;
-          });
+      setState(() {
+        tipsList = items;
       });
+    });
   }
 
   bool getClassConfigListing = false;
   List<ClassConfig> classConfigList = [];
   getClassConfigList(){
-      if(getClassConfigListing) return;
+    if(getClassConfigListing) return;
 
-      getClassConfigListing = true;
-      Map<String, String> map = {"configType":"2"};//class_config类型 1：2.9配置 2:主打品牌
-      new Future(() =>fetchClassConfigList(map)).then((items){
-        if(items == null) return;
-          setState(() {
-              classConfigList = items;
-          });
+    getClassConfigListing = true;
+    Map<String, String> map = {"configType":"2"};//class_config类型 1：2.9配置 2:主打品牌
+    new Future(() =>fetchClassConfigList(map)).then((items){
+      if(items == null) return;
+      setState(() {
+        classConfigList = items;
       });
+    });
   }
 
   List<Widget> _buildClassConfigItems(){
@@ -826,40 +736,11 @@ class AuctionFeedListState extends State<AuctionFeedListShow> with TickerProvide
     return Container(child: Column(crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-      Image.network(getPhotoUrl(classConfig.pic, 100), height: 50, width: 50,),
-      Padding(padding: EdgeInsets.all(5.0),
-          child:Text(classConfig.className, style: TextStyle(color: Colors.grey, fontSize: 13.0),)),
-    ],
+        Image.network(getPhotoUrl(classConfig.pic, 100), height: 50, width: 50,),
+        Padding(padding: EdgeInsets.all(5.0),
+            child:Text(classConfig.className, style: TextStyle(color: Colors.grey, fontSize: 13.0),)),
+      ],
     ),
-    );
-  }
-
-  Widget _buildBidsTitle(){
-    return Container(
-      padding: EdgeInsets.only(left: 10.0, right: 10.0),
-        color: Colors.white,
-        height: 40.0,
-        child:Row(children: <Widget>[
-          Expanded(child: Text("热拍推荐", style:TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0))),
-          new Container(
-            padding: EdgeInsets.only(left:10.0, right: 10.0, top: 5.0, bottom: 5.0),
-            decoration: BoxDecoration(color: Color(colorMain), borderRadius: BorderRadius.all(Radius.circular(100.0)),),
-            child: Row(children: <Widget>[
-              Image.asset("lib/image/high_quality.png", width: 15.0,height: 15.0,),
-              new Text("历史",style: new TextStyle(fontSize: 11.0, color: Color(colorAssitRed)),),
-            ]),
-          ),
-          new Container(
-            margin: EdgeInsets.only(left: 10.0),
-            padding: EdgeInsets.only(left:10.0, right: 10.0, top: 5.0, bottom: 5.0),
-            decoration: BoxDecoration(color: Color(colorMain), borderRadius: BorderRadius.all(Radius.circular(100.0)),),
-            child: Row(children: <Widget>[
-              Image.asset("lib/image/high_quality.png", width: 15.0,height: 15.0,),
-              new Text("预展",style: new TextStyle(fontSize: 11.0, color: Color(colorAssitRed)),),
-            ],
-            ),
-          )
-          ,]),
     );
   }
 }

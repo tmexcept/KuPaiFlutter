@@ -179,8 +179,8 @@ class ImageResolver {
 
     this._listener = listener;
     if (_imageStream.key != oldImageStream?.key) {
-      oldImageStream?.removeListener(_handleImageChanged);
-      _imageStream.addListener(_handleImageChanged);
+      // oldImageStream?.removeListener(_handleImageChanged);
+      // _imageStream.addListener(_handleImageChanged);
     }
   }
 
@@ -190,7 +190,7 @@ class ImageResolver {
   }
 
   void stopListening() {
-    _imageStream?.removeListener(_handleImageChanged);
+    // _imageStream?.removeListener(_handleImageChanged);
   }
 }
 
@@ -199,7 +199,7 @@ class ImageResolver {
 ///
 /// No more special purpose.
 class _RichTextWrapper extends RichText {
-  const _RichTextWrapper({
+  _RichTextWrapper({
     Key key,
     @required TextSpan text,
     TextAlign textAlign = TextAlign.start,
@@ -237,7 +237,7 @@ class _RichTextWrapper extends RichText {
       overflow: overflow,
       textScaleFactor: textScaleFactor,
       maxLines: maxLines,
-      locale: locale ?? Localizations.localeOf(context, nullOk: true),
+      locale: locale ?? Localizations.localeOf(context),
     );
   }
 }
@@ -274,11 +274,11 @@ class _RealRichRenderParagraph extends RenderParagraph {
   @override
   void detach() {
     super.detach();
-    text.children.forEach((textSpan) {
-      if (textSpan is ImageSpan) {
-        textSpan.imageResolver.stopListening();
-      }
-    });
+    // text.children.forEach((textSpan) {
+    //   if (textSpan is ImageSpan) {
+    //     textSpan.imageResolver.stopListening();
+    //   }
+    // });
   }
 
   @override
@@ -298,51 +298,51 @@ class _RealRichRenderParagraph extends RenderParagraph {
     canvas.save();
 
     int textOffset = 0;
-    text.children.forEach((textSpan) {
-      if (textSpan is ImageSpan) {
-        // this is the top-center point of the ImageSpan
-        Offset offsetForCaret = getOffsetForCaret(
-          TextPosition(offset: textOffset),
-          bounds,
-        );
-
-        // found this is a overflowed image. ignore it
-        if (textOffset != 0 &&
-            offsetForCaret.dx == 0 &&
-            offsetForCaret.dy == 0) {
-          return;
-        }
-
-        // this is the top-left point of the ImageSpan.
-        // Usually, offsetForCaret indicates the top-center offset
-        // except the first text which is always (0, 0)
-        Offset topLeftOffset = Offset(
-            offset.dx +
-                offsetForCaret.dx -
-                (textOffset == 0 ? 0 : textSpan.width / 2),
-            offset.dy + offsetForCaret.dy);
-        debugPrint(
-            "_RealRichRenderParagraph ImageSpan, textOffset = $textOffset, offsetForCaret=$offsetForCaret, topLeftOffset=$topLeftOffset");
-
-        // if image is not ready: wait for async ImageInfo
-        if (textSpan.imageResolver.image == null) {
-          textSpan.imageResolver.resolve(() {
-            if (owner == null || !owner.debugDoingPaint) {
-              markNeedsPaint();
-            }
-          });
-          return;
-        }
-        // else: just paint it. bottomCenter Alignment seems better...
-        paintImage(
-            canvas: canvas,
-            rect: topLeftOffset & Size(textSpan.width, textSpan.height),
-            image: textSpan.imageResolver.image,
-            fit: BoxFit.scaleDown,
-            alignment: Alignment.center);
-      }
-      textOffset += textSpan.toPlainText().length;
-    });
+    // text.children.forEach((textSpan) {
+    //   if (textSpan is ImageSpan) {
+    //     // this is the top-center point of the ImageSpan
+    //     Offset offsetForCaret = getOffsetForCaret(
+    //       TextPosition(offset: textOffset),
+    //       bounds,
+    //     );
+    //
+    //     // found this is a overflowed image. ignore it
+    //     if (textOffset != 0 &&
+    //         offsetForCaret.dx == 0 &&
+    //         offsetForCaret.dy == 0) {
+    //       return;
+    //     }
+    //
+    //     // this is the top-left point of the ImageSpan.
+    //     // Usually, offsetForCaret indicates the top-center offset
+    //     // except the first text which is always (0, 0)
+    //     Offset topLeftOffset = Offset(
+    //         offset.dx +
+    //             offsetForCaret.dx -
+    //             (textOffset == 0 ? 0 : textSpan.width / 2),
+    //         offset.dy + offsetForCaret.dy);
+    //     debugPrint(
+    //         "_RealRichRenderParagraph ImageSpan, textOffset = $textOffset, offsetForCaret=$offsetForCaret, topLeftOffset=$topLeftOffset");
+    //
+    //     // if image is not ready: wait for async ImageInfo
+    //     if (textSpan.imageResolver.image == null) {
+    //       textSpan.imageResolver.resolve(() {
+    //         if (owner == null || !owner.debugDoingPaint) {
+    //           markNeedsPaint();
+    //         }
+    //       });
+    //       return;
+    //     }
+    //     // else: just paint it. bottomCenter Alignment seems better...
+    //     paintImage(
+    //         canvas: canvas,
+    //         rect: topLeftOffset & Size(textSpan.width, textSpan.height),
+    //         image: textSpan.imageResolver.image,
+    //         fit: BoxFit.scaleDown,
+    //         alignment: Alignment.center);
+    //   }
+    //   textOffset += textSpan.toPlainText().length;
+    // });
 
     canvas.restore();
   }

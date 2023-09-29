@@ -39,7 +39,7 @@
     },
     {
       "name": "cupertino_icons",
-      "rootUri": "file:///C:/Users/hu/AppData/Roaming/Pub/Cache/hosted/pub.flutter-io.cn/cupertino_icons-0.1.2",
+      "rootUri": "file:///C:/Users/hu/AppData/Roaming/Pub/Cache/hosted/pub.flutter-io.cn/cupertino_icons-0.1.3",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -56,6 +56,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_localizations",
+      "rootUri": "file:///C:/Users/hu/fvm/versions/2.10.4/packages/flutter_localizations",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///C:/Users/hu/fvm/versions/2.10.4/packages/flutter_test",
       "packageUri": "lib/",
@@ -63,15 +69,21 @@
     },
     {
       "name": "http",
-      "rootUri": "file:///C:/Users/hu/AppData/Roaming/Pub/Cache/hosted/pub.flutter-io.cn/http-0.12.0",
+      "rootUri": "file:///C:/Users/hu/AppData/Roaming/Pub/Cache/hosted/pub.flutter-io.cn/http-0.12.2",
       "packageUri": "lib/",
-      "languageVersion": "2.0"
+      "languageVersion": "2.4"
     },
     {
       "name": "http_parser",
-      "rootUri": "file:///C:/Users/hu/AppData/Roaming/Pub/Cache/hosted/pub.flutter-io.cn/http_parser-3.1.3",
+      "rootUri": "file:///C:/Users/hu/AppData/Roaming/Pub/Cache/hosted/pub.flutter-io.cn/http_parser-3.1.4",
       "packageUri": "lib/",
-      "languageVersion": "2.0"
+      "languageVersion": "2.3"
+    },
+    {
+      "name": "intl",
+      "rootUri": "file:///C:/Users/hu/AppData/Roaming/Pub/Cache/hosted/pub.flutter-io.cn/intl-0.17.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "matcher",
@@ -94,6 +106,12 @@
     {
       "name": "path",
       "rootUri": "file:///C:/Users/hu/AppData/Roaming/Pub/Cache/hosted/pub.flutter-io.cn/path-1.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "pedantic",
+      "rootUri": "file:///C:/Users/hu/AppData/Roaming/Pub/Cache/hosted/pub.flutter-io.cn/pedantic-1.11.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -155,10 +173,10 @@
       "name": "flutterapp",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "2.0"
+      "languageVersion": "2.3"
     }
   ],
-  "generated": "2023-08-19T14:12:03.029640Z",
+  "generated": "2023-09-29T04:12:08.816866Z",
   "generator": "pub",
   "generatorVersion": "2.16.2"
 }

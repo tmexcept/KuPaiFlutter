@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
         new Padding(padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0)),
         new Text(
           '$_counter',
-          style: Theme.of(context).textTheme.display1,
+          style: Theme.of(context).textTheme.displayMedium,
         ),
         Text("getData and show in text"),
         new RaisedButton(

@@ -8,39 +8,35 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
-import io.flutter.app.FlutterActivity;
+import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugins.GeneratedPluginRegistrant;
 
 public class MainActivity extends FlutterActivity {
   private static final String CHANNEL = "flutter.io/sign";
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    GeneratedPluginRegistrant.registerWith(this);
-
-      Log.e("tag", "MainActivity  onCreate");
-    new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(
-            new MethodChannel.MethodCallHandler() {
-              @Override
-              public void onMethodCall(MethodCall call, MethodChannel.Result result) {
-                Log.e("tag", "getBatteryLevel");
-                if (call.method.equals("getBatteryLevel")) {
-                  int batteryLevel = getBatteryLevels();
-
-                  if (batteryLevel != -1) {
-                    result.success(batteryLevel);
-                  } else {
-                    result.error("UNAVAILABLE", "Battery level not available.", null);
-                  }
-                } else {
-                  result.notImplemented();
-                }
-              }
-            });
-  }
+   public void configureFlutterEngine(FlutterEngine flutterEngine) {
+//           GeneratedPluginRegistrant.registerWith(flutterEngine);
+//           new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
+//                           .setMethodCallHandler(
+//                               (call, result) -> {
+//                Log.e("tag", "getBatteryLevel");
+//                if (call.method.equals("getBatteryLevel")) {
+//                  int batteryLevel = getBatteryLevels();
+//
+//                  if (batteryLevel != -1) {
+//                    result.success(batteryLevel);
+//                  } else {
+//                    result.error("UNAVAILABLE", "Battery level not available.", null);
+//                  }
+//                } else {
+//                  result.notImplemented();
+//                }
+//                                     }
+//                           );
+       }
   private int getBatteryLevels() {
     int batteryLevel = -1;
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

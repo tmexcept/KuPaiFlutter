@@ -55,7 +55,7 @@ class Song extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    new Text(title, style: textTheme.subhead),
+                    new Text(title, style: textTheme.subtitle1),
                     new Text(author, style: textTheme.caption),
                   ],
                 ),
@@ -139,7 +139,7 @@ class CustomTabBar extends AnimatedWidget implements PreferredSizeWidget {
           return new InkWell(
               child: new Text(
                   pageNames[index],
-                  style: textTheme.subhead.copyWith(
+                  style: textTheme.subtitle1.copyWith(
                     color: Colors.white.withOpacity(
                       index == pageController.page ? 1.0 : 0.2,
                     ),
@@ -203,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(10.0),
                   child: new Text(
                     'T I Z E',
-                    style: textTheme.headline.copyWith(
+                    style: textTheme.subtitle1.copyWith(
                       color: Colors.grey.shade800.withOpacity(0.8),
                       fontWeight: FontWeight.bold,
                     ),
