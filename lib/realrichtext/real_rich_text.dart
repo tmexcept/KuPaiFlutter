@@ -45,15 +45,15 @@ class RealRichText extends Text {
 
   RealRichText(
       this.textSpanList, {
-        Key key,
-        TextStyle style,
+        Key? key,
+        TextStyle? style,
         TextAlign textAlign = TextAlign.start,
-        TextDirection textDirection,
+        TextDirection? textDirection,
         bool softWrap = true,
         TextOverflow overflow = TextOverflow.clip,
         double textScaleFactor = 1.0,
-        int maxLines,
-        Locale locale,
+        int? maxLines,
+        Locale? locale,
       }) : super("",
       style: style,
       textAlign: textAlign,
@@ -67,12 +67,12 @@ class RealRichText extends Text {
   @override
   Widget build(BuildContext context) {
     final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
-    TextStyle effectiveTextStyle = style;
-    if (style == null || style.inherit)
+    TextStyle? effectiveTextStyle = style;
+    if (style == null || style!.inherit)
       effectiveTextStyle = defaultTextStyle.style.merge(style);
     if (MediaQuery.boldTextOverride(context))
       effectiveTextStyle = effectiveTextStyle
-          .merge(const TextStyle(fontWeight: FontWeight.bold));
+          ?.merge(const TextStyle(fontWeight: FontWeight.bold));
 
     TextSpan textSpan = TextSpan(
       style: effectiveTextStyle,
@@ -81,7 +81,7 @@ class RealRichText extends Text {
     );
 
     // pass the context to ImageSpan to create a ImageConfiguration
-    textSpan.children.forEach((f) {
+    textSpan.children?.forEach((f) {
       if (f is ImageSpan) {
         f.updateImageConfiguration(context);
       }
@@ -118,7 +118,7 @@ class RealRichText extends Text {
 class ImageSpan extends TextSpan {
   final double imageWidth;
   final double imageHeight;
-  final EdgeInsets margin;
+  EdgeInsets? margin;
   final ImageProvider imageProvider;
   final ImageResolver imageResolver;
   ImageSpan(
@@ -126,7 +126,7 @@ class ImageSpan extends TextSpan {
         this.imageWidth = 14.0,
         this.imageHeight = 14.0,
         this.margin,
-        GestureRecognizer recognizer,
+        recognizer,
       })  : imageResolver = ImageResolver(imageProvider),
         super(
           style: TextStyle(
@@ -144,20 +144,20 @@ class ImageSpan extends TextSpan {
     imageResolver.updateImageConfiguration(context, imageWidth, imageHeight);
   }
 
-  double get width => imageWidth + (margin == null ? 0 : margin.horizontal);
+  double get width => imageWidth + (margin == null ? 0 : margin!.horizontal);
 
-  double get height => imageHeight + (margin == null ? 0 : margin.vertical);
+  double get height => imageHeight + (margin == null ? 0 : margin!.vertical);
 }
 
 typedef ImageResolverListener = void Function();
 
 class ImageResolver {
-  final ImageProvider imageProvider;
+  late final ImageProvider imageProvider;
 
-  ImageStream _imageStream;
-  ImageConfiguration _imageConfiguration;
-  ui.Image image;
-  ImageResolverListener _listener;
+  late ImageStream _imageStream;
+  late ImageConfiguration _imageConfiguration;
+  late ui.Image image;
+  late ImageResolverListener _listener;
 
   ImageResolver(this.imageProvider);
 
@@ -200,21 +200,16 @@ class ImageResolver {
 /// No more special purpose.
 class _RichTextWrapper extends RichText {
   _RichTextWrapper({
-    Key key,
-    @required TextSpan text,
+    Key? key,
+    required TextSpan text,
     TextAlign textAlign = TextAlign.start,
-    TextDirection textDirection,
+    TextDirection? textDirection,
     bool softWrap = true,
     TextOverflow overflow = TextOverflow.clip,
     double textScaleFactor = 1.0,
-    int maxLines,
-    Locale locale,
-  })  : assert(text != null),
-        assert(textAlign != null),
-        assert(softWrap != null),
-        assert(overflow != null),
-        assert(textScaleFactor != null),
-        assert(maxLines == null || maxLines > 0),
+    int? maxLines,
+    Locale? locale,
+  })  :
         super(
           key: key,
           text: text,
@@ -230,7 +225,7 @@ class _RichTextWrapper extends RichText {
   RenderParagraph createRenderObject(BuildContext context) {
     assert(textDirection != null || debugCheckHasDirectionality(context));
     return _RealRichRenderParagraph(
-      text,
+      text : text,
       textAlign: textAlign,
       textDirection: textDirection ?? Directionality.of(context),
       softWrap: softWrap,
@@ -244,14 +239,14 @@ class _RichTextWrapper extends RichText {
 
 /// paint the image on the top of those ImageSpan's blank space
 class _RealRichRenderParagraph extends RenderParagraph {
-  _RealRichRenderParagraph(TextSpan text,
-      {TextAlign textAlign,
-        TextDirection textDirection,
-        bool softWrap,
-        TextOverflow overflow,
-        double textScaleFactor,
-        int maxLines,
-        Locale locale})
+  _RealRichRenderParagraph(
+      {required TextAlign textAlign,
+        required TextDirection textDirection,
+        required bool softWrap,
+        required TextOverflow overflow,
+        required double textScaleFactor,
+        int? maxLines,
+        required Locale locale, required InlineSpan text})
       : super(
     text,
     textAlign: textAlign,

@@ -27,7 +27,7 @@ class ThemeColorState extends State<ThemeColor> {
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Theme.of(context).highlightColor,
-        title: new Text("ThemeColor About", style: new TextStyle(color: Theme.of(context).accentColor),),
+        title: new Text("ThemeColor About", style: new TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),),
         elevation: 0.0,
       ),
       //...
@@ -37,13 +37,9 @@ class ThemeColorState extends State<ThemeColor> {
           children: <Widget>[
             _colorDisplayBox("突出颜色", "highlightColor", Theme.of(context).highlightColor),
             _colorDisplayBox("提示颜色", "hintColor", Theme.of(context).hintColor),
-            _colorDisplayBox("文本选择手柄颜色", "textSelectionHandleColor", Theme.of(context).textSelectionHandleColor),
-            _colorDisplayBox("文字选择颜色", "textSelectionColor", Theme.of(context).textSelectionColor),
             _colorDisplayBox("背景颜色", "backgroundColor", Theme.of(context).backgroundColor),
-            _colorDisplayBox("强调颜色", "accentColor", Theme.of(context).accentColor),
             _colorDisplayBox("画布颜色", "canvasColor", Theme.of(context).canvasColor),
             _colorDisplayBox("卡片颜色", "cardColor", Theme.of(context).cardColor),
-            _colorDisplayBox("按钮颜色", "buttonColor", Theme.of(context).buttonColor),
             _colorDisplayBox("对话框背景颜色", "dialogBackgroundColor", Theme.of(context).dialogBackgroundColor),
             _colorDisplayBox("禁用颜色", "disabledColor", Theme.of(context).disabledColor),
             _colorDisplayBox("分频器颜色", "dividerColor", Theme.of(context).dividerColor),

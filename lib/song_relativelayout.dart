@@ -8,7 +8,7 @@ class SongRelativeLayout extends StatelessWidget {
       title: 'Flutter Demo',
       theme: new ThemeData(
         brightness: Brightness.dark,
-        primaryColorBrightness: Brightness.dark,
+        // primaryColorBrightness: Brightness.dark,
       ),
       home: new HomeScreen(),
       debugShowCheckedModeBanner: false,
@@ -17,7 +17,7 @@ class SongRelativeLayout extends StatelessWidget {
 }
 
 class Song extends StatelessWidget {
-  const Song({ this.title, this.author, this.likes });
+  const Song({ required this.title, required this.author, required this.likes });
 
   final String title;
   final String author;
@@ -102,16 +102,16 @@ class Feed extends StatelessWidget {
         new Song(title: 'Different', author: 'younglowkey', likes: 23),
         new Song(title: 'Future', author: 'younglowkey', likes: 2),
         new Song(title: 'ASAP', author: 'tha_producer808', likes: 13),
-        new Song(title: '🌲🌲🌲', author: 'TraphousePeyton'),
-        new Song(title: 'Something sweet...', author: '6ryan'),
-        new Song(title: 'Sharpie', author: 'Fergie_6'),
+        new Song(title: '🌲🌲🌲', author: 'TraphousePeyton', likes: 0),
+        new Song(title: 'Something sweet...', author: '6ryan', likes: 0),
+        new Song(title: 'Sharpie', author: 'Fergie_6', likes: 0),
       ],
     );
   }
 }
 
 class CustomTabBar extends AnimatedWidget implements PreferredSizeWidget {
-  CustomTabBar({ this.pageController, this.pageNames })
+  CustomTabBar({ required this.pageController, required this.pageNames })
       : super(listenable: pageController);
 
   final PageController pageController;
@@ -139,7 +139,7 @@ class CustomTabBar extends AnimatedWidget implements PreferredSizeWidget {
           return new InkWell(
               child: new Text(
                   pageNames[index],
-                  style: textTheme.subtitle1.copyWith(
+                  style: TextStyle(
                     color: Colors.white.withOpacity(
                       index == pageController.page ? 1.0 : 0.2,
                     ),
@@ -203,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.all(10.0),
                   child: new Text(
                     'T I Z E',
-                    style: textTheme.subtitle1.copyWith(
+                    style: TextStyle(
                       color: Colors.grey.shade800.withOpacity(0.8),
                       fontWeight: FontWeight.bold,
                     ),

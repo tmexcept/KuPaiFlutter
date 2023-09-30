@@ -75,7 +75,7 @@ class _ShopFragment extends State<ShopPageFragment>{
     }
 
     List<Widget> _getGrid(){
-        List<Widget> gridList = new List();
+        List<Widget> gridList = [];
         //gridList.add(_shopTilte("精品推荐"));
         for(int i =0;i<6;i++){
             gridList.add(_viewGird());

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterapp/animation/animation_show.dart';
 import 'package:flutterapp/auctionfeedlist.dart';
 import 'package:flutterapp/gridview.dart';
 import 'package:flutterapp/http_auctionfeedlist.dart';
@@ -25,7 +26,7 @@ void main() => runApp(MaterialApp(
     ));
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -91,25 +92,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget buildCenter(BuildContext context) {
     return new Column(
-      // Column is also layout widget. It takes a list of children and
-      // arranges them vertically. By default, it sizes itself to fit its
-      // children horizontally, and tries to be as tall as its parent.
-      //
-      // Invoke "debug paint" (press "p" in the console where you ran
-      // "flutter run", or select "Toggle Debug Paint" from the Flutter tool
-      // window in IntelliJ) to see the wireframe for each widget.
-      //
-      // Column has various properties to control how it sizes itself and
-      // how it positions its children. Here we use mainAxisAlignment to
-      // center the children vertically; the main axis here is the vertical
-      // axis because Columns are vertical (the cross axis would be
-      // horizontal).
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        new RaisedButton(
+        ElevatedButton(
           onPressed: () => _getBatteryLevel,
-          child: new Text("getBatteryLevel:" + _batteryLevel),
-          textColor: Colors.lightBlue,
+          child: new Text("getBatteryLevel:" + _batteryLevel,
+            style: TextStyle(color: Colors.lightBlue,
+                backgroundColor: Colors.deepOrangeAccent),),
+          // textColor: Colors.lightBlue,
         ),
         new Text(
           'You have pushed the button this many times:(times bigger than 10 will jump to ThemeColor Screen)',
@@ -121,43 +111,40 @@ class _MyHomePageState extends State<MyHomePage> {
           style: Theme.of(context).textTheme.displayMedium,
         ),
         Text("getData and show in text"),
-        new RaisedButton(
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AuctionFeedList())),
-          child: new Text("button"),
-          textColor: Colors.lightBlue,
-        ),
+        // ElevatedButton(
+        //   onPressed: () => Navigator.push(context,
+        //       MaterialPageRoute(builder: (context) => AuctionFeedList())),
+        //   child: new Text("button"),
+        //   // textColor: Colors.lightBlue,
+        // ),
         Text("getData and show in list"),
-        RaisedButton.icon(
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AuctionFeedListShow())),
-            icon: new Icon(Icons.android),
-            label: Text("显示Feed流")),
-        RaisedButton.icon(
+        // ElevatedButton.icon(
+        //     onPressed: () => Navigator.push(context,
+        //         MaterialPageRoute(builder: (context) => AuctionFeedListShow())),
+        //     icon: new Icon(Icons.android),
+        //     label: Text("显示Feed流")),
+        ElevatedButton.icon(
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ShopPageFragment())),
             icon: new Icon(Icons.android),
             label: Text("GridView")),
-        new RaisedButton(
+        ElevatedButton(
           onPressed: () => Navigator.push(context,
               MaterialPageRoute(builder: (context) => SongRelativeLayout())),
-          elevation: 0.0,
           child: Text("显示复杂的RelativeLayout"),
         ),
-        new RaisedButton(
+        ElevatedButton(
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => StackShowRelativeLayout1())),
-          elevation: 0.0,
           child: Text("显示复杂的RelativeLayout1"),
         ),
-        new RaisedButton(
+        ElevatedButton(
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => StackShowRelativeLayout2())),
-          elevation: 0.0,
           child: Text("显示复杂的RelativeLayout2"),
         ),
       ],

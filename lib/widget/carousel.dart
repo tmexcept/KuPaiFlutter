@@ -16,13 +16,13 @@ class SyCarousel extends StatefulWidget {
   final int _length;
 
   SyCarousel(
-      {@required this.children,
-      this.playInterval,
+      {required this.children,
+      required this.playInterval,
       this.autoPlay = false,
       this.initIndex = 0,
       this.dotSize = 8.0,
       this.curve = Curves.fastOutSlowIn,
-      this.playDuration,
+      required this.playDuration,
       this.showIndicators = true,
       this.scrollDirection = Axis.horizontal,
       this.viewportFraction = 1.0})
@@ -40,10 +40,10 @@ class SyCarousel extends StatefulWidget {
 
 class SyCarouselState extends State<SyCarousel>
     with SingleTickerProviderStateMixin {
-  PageController _pageController;
-  Timer timer;
-  int _currentPage;
-  int _realCurrentPage;
+  late PageController _pageController;
+  late Timer timer;
+  late int _currentPage;
+  late int _realCurrentPage;
 
   @override
   void initState() {

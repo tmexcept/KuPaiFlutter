@@ -2,20 +2,20 @@ import 'dart:convert' show json;
 
 class TipsList {
 
-  bool status;
-  String code;
-  String msg;
-  TipsData data;
+  late bool status;
+  late String code;
+  late String msg;
+  late TipsData data;
 
-  TipsList.fromParams({this.status, this.code, this.msg, this.data});
+  TipsList.fromParams({required this.status, required this.code, required this.msg, required this.data});
 
-  factory TipsList(jsonStr) => jsonStr == null ? null : jsonStr is String ? new TipsList.fromJson(json.decode(jsonStr)) : new TipsList.fromJson(jsonStr);
+  factory TipsList(jsonStr) => jsonStr ? new TipsList.fromJson(json.decode(jsonStr)) : new TipsList.fromJson(jsonStr);
 
   TipsList.fromJson(jsonRes) {
     status = jsonRes['status'];
     code = jsonRes['code'];
     msg = jsonRes['msg'];
-    data = jsonRes['data'] == null ? null : new TipsData.fromJson(jsonRes['data']);
+    data = (jsonRes['data'] == null ? null : new TipsData.fromJson(jsonRes['data']))!;
   }
 
   @override
@@ -26,15 +26,15 @@ class TipsList {
 
 class TipsData {
 
-  List<Tips> tips;
+  late List<Tips> tips;
 
-  TipsData.fromParams({this.tips});
+  TipsData.fromParams({required this.tips});
 
   TipsData.fromJson(jsonRes) {
-    tips = jsonRes['tips'] == null ? null : [];
+    tips = [];
 
     for (var tipsItem in tips == null ? [] : jsonRes['tips']){
-      tips.add(tipsItem == null ? null : new Tips.fromJson(tipsItem));
+      tips.add(new Tips.fromJson(tipsItem));
     }
   }
 
@@ -46,20 +46,31 @@ class TipsData {
 
 class Tips {
 
-  int id;
-  int orderNum;
-  int status;
-  int tipsType;
-  int yn;
-  String createTime;
-  String h5LinkUrl;
-  String imageUrl;
-  String imageUrlBig;
-  String imageUrlNew;
-  String linkUrl;
-  String title;
+  late int id;
+  late int orderNum;
+  late int status;
+  late int tipsType;
+  late int yn;
+  late String createTime;
+  late String h5LinkUrl;
+  late String imageUrl;
+  late String imageUrlBig;
+  late String imageUrlNew;
+  late String linkUrl;
+  late String title;
 
-  Tips.fromParams({this.id, this.orderNum, this.status, this.tipsType, this.yn, this.createTime, this.h5LinkUrl, this.imageUrl, this.imageUrlBig, this.imageUrlNew, this.linkUrl, this.title});
+  Tips.fromParams({required this.id,
+    required this.orderNum,
+    required this.status,
+    required this.tipsType,
+    required this.yn,
+    required this.createTime,
+    required this.h5LinkUrl,
+    required this.imageUrl,
+    required this.imageUrlBig,
+    required this.imageUrlNew,
+    required this.linkUrl,
+    required this.title});
 
   Tips.fromJson(jsonRes) {
     id = jsonRes['id'];
