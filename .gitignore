@@ -4,3 +4,6 @@
 /captures
 .idea
 /build
+.gradle
+/android/.gradle/
+/.dart_tool/
