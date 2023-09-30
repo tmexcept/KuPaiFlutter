@@ -1,9 +1,10 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:flutterapp/animation/anim_tween.dart';
+
+import '/animation/anim_tween.dart';
 import '/animation/anim_tween_animation.dart' as animTween2;
 import '/animation/anim_tween_animation_listener.dart' as animTween3;
+import '/animation/anim_tween_grow_transition.dart' as animTween4;
+import '/animation/anim_tween_curve.dart' as animTween5;
 
 class LogoApp extends StatefulWidget {
   @override
@@ -26,8 +27,8 @@ class _LogoAppState extends State<LogoApp> {
 
   Widget buildCenter(BuildContext context) {
     return new Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         ElevatedButton.icon(
           onPressed: () => Navigator.push(
@@ -48,6 +49,20 @@ class _LogoAppState extends State<LogoApp> {
               MaterialPageRoute(builder: (context) => animTween3.AnimTween())),
           icon: Icon(Icons.animation),
           label: Text("tween animation addListener"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => animTween4.AnimTween())),
+          icon: Icon(Icons.animation),
+          label: Text("tween animation grow transition"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => animTween5.AnimTween())),
+          icon: Icon(Icons.animation),
+          label: Text("tween animation curve"),
         ),
         Padding(padding: EdgeInsets.only(top: 10)),
       ],

@@ -9,6 +9,8 @@ import 'package:flutterapp/stack_show1.dart';
 import 'package:flutterapp/stack_show2.dart';
 import 'package:flutterapp/themecolor.dart';
 
+import 'widget_life_circle.dart';
+
 void main() => runApp(MaterialApp(
       title: 'Flutter Demo',
       theme: new ThemeData(
@@ -94,10 +96,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return new Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        MaterialButton(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => WidgetLifeCircle())),
+          child: new Text("Widget LifeCircle",
+              style: TextStyle(color: Colors.deepOrangeAccent)),
+        ),
         ElevatedButton(
           onPressed: () => _getBatteryLevel,
           child: new Text("getBatteryLevel:" + _batteryLevel,
-            style: TextStyle(color: Colors.deepOrangeAccent)),
+              style: TextStyle(color: Colors.deepOrangeAccent)),
           // textColor: Colors.lightBlue,
         ),
         new Text(
@@ -146,12 +154,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   builder: (context) => StackShowRelativeLayout2())),
           child: Text("FilledButton 显示Stack中的Align"),
         ),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         ElevatedButton.icon(
           onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => LogoApp())),
+              context, MaterialPageRoute(builder: (context) => LogoApp())),
           icon: Icon(Icons.animation),
           label: Text("跳转动画页面"),
         ),

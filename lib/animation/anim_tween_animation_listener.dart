@@ -45,8 +45,8 @@ class _AnimTweenState extends State<AnimTween>
   @override
   void dispose() {
     controller.dispose();
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     super.dispose();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
   }
 }
 
