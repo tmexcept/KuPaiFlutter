@@ -97,8 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ElevatedButton(
           onPressed: () => _getBatteryLevel,
           child: new Text("getBatteryLevel:" + _batteryLevel,
-            style: TextStyle(color: Colors.lightBlue,
-                backgroundColor: Colors.deepOrangeAccent),),
+            style: TextStyle(color: Colors.deepOrangeAccent)),
           // textColor: Colors.lightBlue,
         ),
         new Text(
@@ -128,24 +127,33 @@ class _MyHomePageState extends State<MyHomePage> {
                 MaterialPageRoute(builder: (context) => ShopPageFragment())),
             icon: new Icon(Icons.android),
             label: Text("GridView")),
-        ElevatedButton(
+        TextButton(
           onPressed: () => Navigator.push(context,
               MaterialPageRoute(builder: (context) => SongRelativeLayout())),
-          child: Text("显示复杂的RelativeLayout"),
+          child: Text("TextButton 显示tab"),
         ),
-        ElevatedButton(
+        OutlinedButton(
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => StackShowRelativeLayout1())),
-          child: Text("显示复杂的RelativeLayout1"),
+          child: Text("OutlinedButton 显示Stack中的Positioned"),
         ),
-        ElevatedButton(
+        FilledButton(
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => StackShowRelativeLayout2())),
-          child: Text("显示复杂的RelativeLayout2"),
+          child: Text("FilledButton 显示Stack中的Align"),
+        ),
+        SizedBox(height: 10,),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => LogoApp())),
+          icon: Icon(Icons.animation),
+          label: Text("跳转动画页面"),
         ),
       ],
     );
