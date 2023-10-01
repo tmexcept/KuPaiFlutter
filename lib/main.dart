@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterapp/animation/animation_show.dart';
-import 'package:flutterapp/auctionfeedlist.dart';
 import 'package:flutterapp/gridview.dart';
-import 'package:flutterapp/http_auctionfeedlist.dart';
 import 'package:flutterapp/song_relativelayout.dart';
 import 'package:flutterapp/stack_show1.dart';
 import 'package:flutterapp/stack_show2.dart';
@@ -159,7 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         ElevatedButton.icon(
           onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LogoApp())),
+              context, MaterialPageRoute(builder: (context) => AnimShow())),
           icon: Icon(Icons.animation),
           label: Text("跳转动画页面"),
         ),

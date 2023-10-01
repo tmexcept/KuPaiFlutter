@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/animation/anim_container.dart';
 
 import '/animation/anim_tween.dart';
 import '/animation/anim_tween_animation.dart' as animTween2;
 import '/animation/anim_tween_animation_listener.dart' as animTween3;
 import '/animation/anim_tween_grow_transition.dart' as animTween4;
 import '/animation/anim_tween_curve.dart' as animTween5;
+import 'anim_bounce_ball.dart';
+import 'anim_opacity.dart';
 
-class LogoApp extends StatefulWidget {
+class AnimShow extends StatefulWidget {
   @override
-  State<LogoApp> createState() => _LogoAppState();
+  State<AnimShow> createState() => _AnimShowState();
 }
 
-class _LogoAppState extends State<LogoApp> {
+class _AnimShowState extends State<AnimShow> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -63,6 +66,27 @@ class _LogoAppState extends State<LogoApp> {
               MaterialPageRoute(builder: (context) => animTween5.AnimTween())),
           icon: Icon(Icons.animation),
           label: Text("tween animation curve"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AnimBounceBall())),
+          icon: Icon(Icons.animation),
+          label: Text("anim bounce ball"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AnimContainer())),
+          icon: Icon(Icons.animation),
+          label: Text("anim container"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AnimOpacity())),
+          icon: Icon(Icons.animation),
+          label: Text("anim Opacity"),
         ),
         Padding(padding: EdgeInsets.only(top: 10)),
       ],
