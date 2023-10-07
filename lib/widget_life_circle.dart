@@ -37,6 +37,7 @@ class MyCounterWidget extends StatefulWidget {
 
 class MyCounterState extends State<MyCounterWidget> {
   int counter = 0;
+  late MaterialButton butt;
 
   MyCounterState() {
     print("执行MyCounterState的构造方法");
@@ -45,7 +46,7 @@ class MyCounterState extends State<MyCounterWidget> {
   @override
   void initState() {
     super.initState();
-    print("执行MyCounterState的init方法");
+    print("执行MyCounterState的initState方法");
   }
 
   @override
@@ -64,7 +65,7 @@ class MyCounterState extends State<MyCounterWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              MaterialButton(
+              butt = MaterialButton(
                 color: Colors.redAccent,
                 child: Text(
                   "+1",
@@ -83,6 +84,7 @@ class MyCounterState extends State<MyCounterWidget> {
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
                 onPressed: () {
+                  print("butt= $butt,  butt.key=${butt.key}");
                   setState(() {
                     counter--;
                   });

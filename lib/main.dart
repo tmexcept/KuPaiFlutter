@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutterapp/animation/animation_show.dart';
-import 'package:flutterapp/gridview.dart';
-import 'package:flutterapp/song_relativelayout.dart';
-import 'package:flutterapp/stack_show1.dart';
-import 'package:flutterapp/stack_show2.dart';
-import 'package:flutterapp/themecolor.dart';
-import 'package:flutterapp/widget/text_style.dart';
+import 'animation/animation_show.dart';
+import 'kupai/gridview.dart';
+import 'kupai/song_relativelayout.dart';
+import 'stack_show1.dart';
+import 'stack_show2.dart';
+import 'themecolor.dart';
+import 'text_style.dart';
 
 import 'widget_life_circle.dart';
 
