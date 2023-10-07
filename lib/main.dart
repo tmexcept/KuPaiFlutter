@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterapp/provider/WeatherInfoPage.dart';
 import 'animation/animation_show.dart';
 import 'kupai/gridview.dart';
 import 'kupai/song_relativelayout.dart';
@@ -167,6 +168,13 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () => Navigator.push(
               context, MaterialPageRoute(builder: (context) => TextDemo())),
           icon: Icon(Icons.animation),
+          label: Text("Text Demo"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10),),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => WeatherInfoPage())),
+          icon: Icon(Icons.wallpaper),
           label: Text("Text Demo"),
         ),
       ],
