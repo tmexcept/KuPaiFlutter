@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterapp/InheritedWidgetCount.dart';
+import 'package:flutterapp/InheritedWidgetPerson.dart';
 import 'package:flutterapp/provider/WeatherInfoPage.dart';
 import 'animation/animation_show.dart';
 import 'kupai/gridview.dart';
@@ -163,20 +165,54 @@ class _MyHomePageState extends State<MyHomePage> {
           icon: Icon(Icons.animation),
           label: Text("跳转动画页面"),
         ),
-        Padding(padding: EdgeInsets.only(top: 10),),
+        Padding(
+          padding: EdgeInsets.only(top: 10),
+        ),
         ElevatedButton.icon(
           onPressed: () => Navigator.push(
               context, MaterialPageRoute(builder: (context) => TextDemo())),
           icon: Icon(Icons.animation),
           label: Text("Text Demo"),
         ),
-        Padding(padding: EdgeInsets.only(top: 10),),
-        ElevatedButton.icon(
-          onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => WeatherInfoPage())),
-          icon: Icon(Icons.wallpaper),
-          label: Text("Text Demo"),
+        Padding(
+          padding: EdgeInsets.only(top: 10),
         ),
+
+        SizedBox(
+          height: 50,
+          child: ElevatedButton.icon(
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => WeatherInfoPage())),
+            icon: Icon(Icons.wallpaper),
+            label: Text("Provider and Consumer Demo"),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 10),
+        ),
+        Row(
+          children: [
+            SizedBox(
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => CountPage())),
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text("InheritedWidget Count Demo"),
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => PersonPage())),
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Text("InheritedWidget Person Demo"),
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
