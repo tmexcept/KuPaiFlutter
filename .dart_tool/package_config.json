@@ -159,9 +159,9 @@
     },
     {
       "name": "typed_data",
-      "rootUri": "file:///C:/Users/hu/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/typed_data-1.3.0",
+      "rootUri": "file:///C:/Users/hu/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/typed_data-1.3.2",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.17"
     },
     {
       "name": "vector_math",
@@ -182,7 +182,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2023-10-07T10:20:47.875561Z",
+  "generated": "2023-10-08T10:27:25.703760Z",
   "generator": "pub",
   "generatorVersion": "3.1.3"
 }

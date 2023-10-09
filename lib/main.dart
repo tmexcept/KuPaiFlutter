@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutterapp/InheritedWidgetCount.dart';
 import 'package:flutterapp/InheritedWidgetPerson.dart';
 import 'package:flutterapp/provider/WeatherInfoPage.dart';
+import 'CustomPaintPage.dart';
 import 'animation/animation_show.dart';
 import 'kupai/gridview.dart';
 import 'kupai/song_relativelayout.dart';
@@ -195,24 +196,36 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               height: 50,
               child: ElevatedButton(
-                onPressed: () => Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => CountPage())),
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CountPage())),
                 child: Padding(
                   padding: EdgeInsets.all(10),
                   child: Text("InheritedWidget Count Demo"),
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => PersonPage())),
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: Text("InheritedWidget Person Demo"),
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: ElevatedButton(
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PersonPage())),
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text("InheritedWidget Person Demo"),
+                ),
               ),
             ),
           ],
-        )
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 10),
+        ),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => CustomPaintPage())),
+          icon: Icon(Icons.animation),
+          label: Text("CustomPaint Demo"),
+        ),
       ],
     );
   }
