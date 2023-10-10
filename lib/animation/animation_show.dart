@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/animation/anim_animted_build.dart';
 import 'package:flutterapp/animation/anim_container.dart';
+import 'package:flutterapp/animation/anim_size_change2.dart';
 
 import '/animation/anim_tween.dart';
 import '/animation/anim_tween_animation.dart' as animTween2;
 import '/animation/anim_tween_animation_listener.dart' as animTween3;
 import '/animation/anim_tween_grow_transition.dart' as animTween4;
 import '/animation/anim_tween_curve.dart' as animTween5;
+import '/animation/anim_tween2.dart' as animTween6;
+import 'anim_animted_anim.dart';
+import 'anim_animted_widget.dart';
 import 'anim_bounce_ball.dart';
+import 'anim_color_lerp.dart';
+import 'anim_color_tween.dart';
 import 'anim_opacity.dart';
+import 'anim_size_change.dart';
 
 class AnimShow extends StatefulWidget {
   @override
@@ -43,6 +51,13 @@ class _AnimShowState extends State<AnimShow> {
         ElevatedButton.icon(
           onPressed: () => Navigator.push(context,
               MaterialPageRoute(builder: (context) => animTween2.AnimTween())),
+          icon: Icon(Icons.animation),
+          label: Text("tween animation"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => animTween6.AnimTween())),
           icon: Icon(Icons.animation),
           label: Text("tween animation"),
         ),
@@ -87,6 +102,48 @@ class _AnimShowState extends State<AnimShow> {
               MaterialPageRoute(builder: (context) => AnimOpacity())),
           icon: Icon(Icons.animation),
           label: Text("anim Opacity"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        FilledButton(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AnimSizeChange())),
+          child: Text("AnimSizeChange  FilledButton"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        FilledButton(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AnimSizeChange2())),
+          child: Text("AnimSizeChange2  FilledButton"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        ElevatedButton(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AnimColorLerp())),
+          child: Text("AnimColorLerp  ElevatedButton"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        ElevatedButton(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AnimColorTween())),
+          child: Text("AnimColorLerp  ElevatedButton"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        OutlinedButton(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AnimAnimatedWidget())),
+          child: Text("AnimAnimatedWidget  OutlinedButton"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        OutlinedButton(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AnimAnimatedBuild())),
+          child: Text("AnimAnimatedBuild  OutlinedButton"),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10)),
+        MaterialButton(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AnimAnimatedAnim())),
+          child: Text("AnimAnimatedAnim  MaterialButton"),
         ),
         Padding(padding: EdgeInsets.only(top: 10)),
       ],
