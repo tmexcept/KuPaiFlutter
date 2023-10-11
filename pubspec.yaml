@@ -9,14 +9,30 @@ description: A new Flutter application.
 # Read more about versioning at semver.org.
 version: 1.1.0
 
+  #表示，当前工程兼容版本号大于等于2.12.0并且小于3.0.0的Dart版本的语法；
+  #我们也可以手动添加上Flutter的版本号，比如：
+  #dart复制代码environment:
+  #  sdk: ">=2.19.0 <3.13.6"
+#  flutter: "1.22.0"
 environment:
-  sdk: 3.1.3
+  sdk: ">=2.19.0 <3.13.6"
 
+# 我们机器上的flutter版本，我们也可以在此处添加version来指定flutter的版本；
+# dart复制代码dependencies:
+#  flutter:
+#    sdk: flutter
+#    version: "2.5.3"
 dependencies:
   flutter:
     sdk: flutter
 
-
+# 这些第三方的版本号有以下几种写法：
+  #
+  #不指定/any：这个时候，默认加载最新的版本；但是一般我们不推荐这样写，因为版本的变化可能会引起调用方式发生变化，导致项目编译出错；
+  #x.y.z：明确指定使用某一个版本号；
+  #<=x.y.z/<x.y.z：使用小于或者小于等于某一个版本的包，这种方式，版本号需要加引号；
+  #>=x.y.z <x.y.z：指定使用某一个区间的版本，这种方式，版本号需要加引号；
+  #^x.y.z：此种方式最为常见，也是比较推荐使用的方式。意为在大版本不变的情况下，使用最新的小版本；例如：^2.12.0相当于>=2.12.0 <3.0.0;
   provider: ^6.0.2
 
   flutter_localizations:
@@ -27,6 +43,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   http: ^1.1.0
 
+# dev_dependencies配置项与dependencies的配置基本相似，都是配置应用程序所依赖的包；
+#不同的是，dependencies下配置的依赖包会被编译到项目中，而dev_dependencies配置的仅仅是运行期间的包；
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -35,7 +53,11 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
 
-# The following section is specific to Flutter.
+# The following section is specific to Flutter.资源的配置也是在这个配置下进行设置：
+#assets：配置图片；
+#fonts：配置字体；
+#plugin：该配置只存在于插件项目中，用来配置适配的平台，一般不要修改；如需添加新平台，直接添加即可；
+#需要注意的是，此文件中的配置一定要特别注意格式与缩进，否则配置将可能无法生效；
 flutter:
 
   # The following line ensures that the Material Icons font is
