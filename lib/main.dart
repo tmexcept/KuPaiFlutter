@@ -5,6 +5,7 @@ import 'package:flutterapp/InheritedWidgetPerson.dart';
 import 'package:flutterapp/provider/WeatherInfoPage.dart';
 import 'CustomPaintPage.dart';
 import 'animation/animation_show.dart';
+import 'demos/drawfingerline.dart';
 import 'kupai/gridview.dart';
 import 'kupai/song_relativelayout.dart';
 import 'stack_show1.dart';
@@ -224,6 +225,15 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () => Navigator.push(
               context, MaterialPageRoute(builder: (context) => CustomPaintPage())),
           icon: Icon(Icons.animation),
+          label: Text("CustomPaint Demo"),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 10),
+        ),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => DrawFingerLine())),
+          icon: Icon(Icons.aod_sharp),
           label: Text("CustomPaint Demo"),
         ),
       ],
