@@ -89,6 +89,7 @@ class MyContent extends StatelessWidget {
 
     return Consumer<WeatherInfo>(
       builder: (context, weatherInfo, child) {
+        print("Consumer MyContent build");
         return Padding(
           padding: EdgeInsets.all(8.0),
           child: Text("StatelessWidget包裹的Consumer type=${weatherInfo.temperatureType}"),
